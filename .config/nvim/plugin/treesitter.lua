@@ -3,8 +3,8 @@ if not ok then
   return
 end
 
-local function remove_if_clang_not_installed(langs)
-  if vim.fn.executable("clang") == 1 then
+local function remove_if_compiler_not_installed(langs)
+  if vim.fn.executable("clang") == 1 or vim.fn.executable("cl") or vim.fn.executable("gcc") then
     return langs
   end
   return {}
@@ -15,11 +15,11 @@ require("treesitter-context").setup({})
 ---@diagnostic disable-next-line: missing-fields
 require("nvim-treesitter.configs").setup({
   -- Auto install languages that are not installed. Defaults to false (but you can change for yourself!)
-  ensure_installed = remove_if_clang_not_installed({
+  ensure_installed = remove_if_compiler_not_installed({
     "go",
     "c",
     "cpp",
-    "lua",
+    -- "lua",
     "markdown",
     "markdown_inline",
     "python",

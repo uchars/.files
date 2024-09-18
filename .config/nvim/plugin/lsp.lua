@@ -86,10 +86,17 @@ require("lspconfig").tsserver.setup({
   on_attach = on_attach,
 })
 
-require("lspconfig").clangd.setup({
-  capabilities = capabilities,
-  on_attach = on_attach,
-})
+if vim.fn.executable("ccls") == 1 then
+  require("lspconfig").ccls.setup({
+    capabilities = capabilities,
+    on_attach = on_attach,
+  })
+else
+  require("lspconfig").clangd.setup({
+    capabilities = capabilities,
+    on_attach = on_attach,
+  })
+end
 
 require("lspconfig").pylsp.setup({
   capabilities = capabilities,
