@@ -21,6 +21,7 @@ alias diskspace="du -S | sort -nr | more"
 # list
 alias ll="ls -al"
 alias la="ls -A"
+alias l="ls"
 
 # keyboard
 alias kger="setxkbmap de"

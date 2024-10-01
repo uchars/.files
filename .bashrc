@@ -5,15 +5,15 @@ else
       export PS1='\u@\h:\w\$ '
 fi
 
-source "$HOME/.config/alias.sh"
-source "$HOME/.config/proxy.sh"
+[ -s "$HOME/.config/alias.sh" ] && \. "$HOME/.config/alias.sh"
+[ -s "$HOME/.config/proxy.sh" ] && \. "$HOME/.config/proxy.sh"
+[ -s "$HOME/.config/secret.sh" ] && \. "$HOME/.config/secret.sh"
 
 export EDITOR="nvim"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-[ -s "$HOME/.config/secret.sh" ] && \. "$HOME/.config/secret.sh"
 
 if [ -e "$HOME/.cargo/env" ] ; then
     . "$HOME/.cargo/env"

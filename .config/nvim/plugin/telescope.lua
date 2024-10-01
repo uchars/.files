@@ -24,25 +24,20 @@ end
 require("telescope").setup({
   defaults = {
     file_ignore_patterns = { ".git/", ".cache/" },
+    theme = "ivy",
+    previewer = true,
+    prompt_prefix = "-> ",
+    layout_strategy = "bottom_pane",
     layout_config = {
-      horizontal = {
-        prompt_position = "top",
-        preview_width = 0.55,
-        results_width = 0.8,
-      },
-      vertical = {
-        mirror = false,
-      },
-      width = 0.87,
-      height = 0.8,
-      preview_cutoff = 120,
+      height = 0.3,
+      prompt_position = "top",
     },
+    borderchars = { "─", "", "", "", "", "", "", "" },
   },
   extensions = {
     project = {
       display_type = "full",
       hidden_files = true,
-      theme = "dropdown",
       base_dirs = remove_nonexistant_dirs({
         get_env_or_default("HOME", "~") .. "/src",
         get_env_or_default("HOME", "~") .. "/work",
@@ -64,7 +59,15 @@ vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles)
 vim.keymap.set("n", "<leader><space>", require("telescope.builtin").buffers)
 vim.keymap.set("n", "<leader>/", function()
   require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
-    previewer = false,
+    theme = "ivy",
+    previewer = true,
+    prompt_prefix = "-> ",
+    layout_strategy = "bottom_pane",
+    layout_config = {
+      height = 0.3,
+      prompt_position = "top",
+    },
+    borderchars = { "─", "", "", "", "", "", "", "" },
   }))
 end)
 vim.keymap.set("n", "<leader>gf", require("telescope.builtin").git_files)
