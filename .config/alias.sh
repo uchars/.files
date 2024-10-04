@@ -28,3 +28,7 @@ alias kger="setxkbmap de"
 alias kus="setxkbmap us"
 
 alias ..="cd .."
+
+# sound
+alias vol="amixer set Master --quiet"
+alias mute="amixer set Master 1+ toggle --quiet"

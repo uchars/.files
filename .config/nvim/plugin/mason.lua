@@ -22,7 +22,9 @@ local servers = {
 	},
 }
 
-local formatters = {}
+local formatters = {
+	shfmt = {},
+}
 
 if unzip_installed or is_windows then
 	servers.clangd = {}

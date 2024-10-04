@@ -1,0 +1,14 @@
+libx11-dev
+libxft-dev
+libxinerama-dev
+build-essential
+ripgrep
+python3.12-venv
+unzip
+dmenu
+lxrandr
+neofetch
+stow
+git
+ghc
+fzf

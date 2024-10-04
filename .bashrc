@@ -8,6 +8,7 @@ fi
 [ -s "$HOME/.config/alias.sh" ] && \. "$HOME/.config/alias.sh"
 [ -s "$HOME/.config/proxy.sh" ] && \. "$HOME/.config/proxy.sh"
 [ -s "$HOME/.config/secret.sh" ] && \. "$HOME/.config/secret.sh"
+[ -s "$HOME/.config/path.sh" ] && \. "$HOME/.config/path.sh"
 
 export EDITOR="nvim"
 
