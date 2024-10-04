@@ -5,6 +5,7 @@ if not ok and not ok_lsp and not ok_formatter then
 	return
 end
 
+local haskell_installed = vim.fn.executable("ghcup") == 1
 local py_installed = vim.fn.executable("python") == 1 or vim.fn.executable("python3") == 1
 local go_installed = vim.fn.executable("go") == 1
 local unzip_installed = vim.fn.executable("unzip") == 1
@@ -64,6 +65,11 @@ end
 if ocaml_installed then
 	formatters.ocamlformat = {}
 	servers.ocamllsp = {}
+end
+
+if haskell_installed then
+	servers.hls = {}
+	formatters.fourmolu = {}
 end
 
 mason_lsp.setup({

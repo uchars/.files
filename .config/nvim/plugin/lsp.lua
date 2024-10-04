@@ -162,6 +162,11 @@ require("lspconfig").dockerls.setup({
   on_attach = on_attach,
 })
 
+require("lspconfig").hls.setup({
+  capabilities = capabilities,
+  on_attach = on_attach,
+})
+
 if ok_fg then
   fidget.setup({
     window = { blend = 0 },

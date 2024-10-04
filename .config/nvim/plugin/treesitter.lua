@@ -33,6 +33,7 @@ require("nvim-treesitter.configs").setup({
     "make",
     "sql",
     "css",
+    -- "haskell",
   }),
   auto_install = false,
   autotag = {

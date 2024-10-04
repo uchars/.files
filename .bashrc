@@ -2,7 +2,7 @@ export PATH="$PATH:$HOME/.local/bin/nvim/bin:$HOME/.local/bin"
 if [ -n "$TERM" ] && [ "$TERM" != "dumb" ]; then
   export PS1='\[\033[32m\]\u@\h\[\033[0m\](\w)> '
 else
-      export PS1='\u@\h:\w\$ '
+  export PS1='\u@\h:\w\$ '
 fi
 
 [ -s "$HOME/.config/alias.sh" ] && \. "$HOME/.config/alias.sh"
@@ -13,9 +13,11 @@ fi
 export EDITOR="nvim"
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
-if [ -e "$HOME/.cargo/env" ] ; then
-    . "$HOME/.cargo/env"
+if [ -e "$HOME/.cargo/env" ]; then
+  . "$HOME/.cargo/env"
 fi
+
+[ -f "$HOME/.ghcup/env" ] && . "$HOME/.ghcup/env"

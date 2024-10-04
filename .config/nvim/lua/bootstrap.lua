@@ -101,7 +101,6 @@ require("lazy").setup({
 		dependencies = {
 			"octarect/telescope-menu.nvim",
 			"nvim-lua/plenary.nvim",
-			"nvim-telescope/telescope-project.nvim",
 			"ThePrimeagen/git-worktree.nvim",
 			{
 				"nvim-telescope/telescope-fzf-native.nvim",

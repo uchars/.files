@@ -10,5 +10,6 @@ lxrandr
 neofetch
 stow
 git
-ghc
 fzf
+redshift
+feh

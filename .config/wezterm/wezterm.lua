@@ -1,7 +1,9 @@
 local wezterm = require("wezterm")
+local sessionizer = require("sessionizer")
 local config = wezterm.config_builder()
 local launch_menu = {}
 
+config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
 config.enable_tab_bar = true
 config.use_fancy_tab_bar = false
 config.tab_bar_style = {}
@@ -68,6 +70,7 @@ config.keys = {
   { key = "a",          mods = "LEADER|CTRL", action = wezterm.action.SendKey({ key = "a", mods = "CTRL" }) },
   { key = "phys:Space", mods = "ALT",         action = wezterm.action.ActivateCommandPalette },
   { key = "c",          mods = "LEADER",      action = wezterm.action.ActivateCopyMode },
+  { key = "L",          mods = "LEADER",      action = wezterm.action.ShowDebugOverlay },
   {
     key = "s",
     mods = "LEADER",
@@ -137,6 +140,7 @@ config.keys = {
       end),
     }),
   },
+  { key = "f", mods = "LEADER", action = wezterm.action_callback(sessionizer.toggle) },
 }
 
 config.key_tables = {
