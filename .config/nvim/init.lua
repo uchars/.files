@@ -109,7 +109,7 @@ vim.api.nvim_set_keymap("n", "gr", [[:lua GrepCword()<CR>]], { noremap = true, s
 vim.api.nvim_set_keymap("n", "<C-k><C-o>", [[:lua HeaderSourceToggle()<CR>]], { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<C-p>", [[:lua FindFile()<CR>]], { noremap = true, silent = true })
 
-if true then
+if not vim.fn.system("nixos-version") ~= "" and not os.getenv("NVIM_MINIMAL") then
 	require("bootstrap")
 end
 

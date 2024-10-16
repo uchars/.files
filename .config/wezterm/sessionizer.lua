@@ -4,24 +4,30 @@ local act = wezterm.action
 local M = {}
 
 local fd = os.getenv("HOME") .. "/.local/bin/fd/fd"
-local rootPath = os.getenv("HOME") .. "/Documents"
+local rootPath = os.getenv("HOME") .. "/Documents/edu"
 local dotfiles = os.getenv("HOME") .. "/.files"
 local work = os.getenv("HOME") .. "/work"
 local src = os.getenv("HOME") .. "/src"
+local tmp = "/tmp/scratch"
 
 M.toggle = function(window, pane)
-  local projects = {}
+  local projects = {
+    { label = dotfiles, id = ".files" },
+  }
 
   local success, stdout, stderr = wezterm.run_child_process({
     fd,
     "-HI",
     "-td",
-    "^.git$",
-    "--max-depth=4",
+    ".",
+    "-E",
+    ".git",
+    "--max-depth=3",
     rootPath,
     dotfiles,
     work,
     src,
+    tmp,
   })
 
   if not success then
@@ -32,7 +38,8 @@ M.toggle = function(window, pane)
   for line in stdout:gmatch("([^\n]*)\n?") do
     local project = line:gsub("/.git/$", "")
     local label = project
-    local id = project:gsub(".*/", "")
+    local id = project:gsub(os.getenv("HOME"), "~")
+    wezterm.log_info("inserting id='" .. tostring(id) .. "'")
     table.insert(projects, { label = tostring(label), id = tostring(id) })
   end
 

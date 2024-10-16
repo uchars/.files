@@ -1,6 +1,8 @@
 # editor
 alias v="nvim"
 alias nv="nvim"
+alias vm="NVIM_MINIMAL=YES nvim"
+alias mv="NVIM_MINIMAL=YES nvim"
 
 # git
 alias gs="git status"
@@ -44,3 +46,13 @@ alias splay="dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/
 alias srep="dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Repeat > /dev/null && echo 'repeating stitle'"
 alias sprev="dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous > /dev/null && stitle"
 alias sp=sprev
+
+# browser & programs
+alias bt="blueman-manager&"
+alias draw="brave-browser excalidraw.com&"
+
+# system
+alias lock="dm-tool lock"
+alias o="xdg-open"
+alias brightness="xrandr -q | grep ' connected'"
+alias ram="free -h --si"

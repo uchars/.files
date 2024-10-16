@@ -13,3 +13,5 @@ git
 fzf
 redshift
 feh
+texlive-full
+latexmk

@@ -30,3 +30,7 @@ fi
 command -v setxkbmap >/dev/null 2>&1 && setxkbmap us
 
 [ -f "$HOME/.ghcup/env" ] && . "$HOME/.ghcup/env"
+
+if ! [ -d "/tmp/scratch" ]; then
+	mkdir /tmp/scratch
+fi

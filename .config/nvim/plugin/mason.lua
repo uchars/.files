@@ -1,3 +1,7 @@
+if vim.fn.system("nixos-version") ~= "" then
+	-- do not need mason on nixos.
+	return
+end
 local ok, _ = pcall(require, "mason")
 local ok_lsp, mason_lsp = pcall(require, "mason-lspconfig")
 local ok_formatter, mason_format = pcall(require, "mason-null-ls")
@@ -21,10 +25,12 @@ local servers = {
 			telemetry = { enable = false },
 		},
 	},
+	texlab = {},
 }
 
 local formatters = {
 	shfmt = {},
+	latexindent = {},
 }
 
 if unzip_installed or is_windows then

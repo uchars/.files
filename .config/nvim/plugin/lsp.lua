@@ -1,5 +1,5 @@
 local ok_fg, fidget = pcall(require, "fidget")
-local ok_lspconf, _ = pcall(require, "fidget")
+local ok_lspconf, _ = pcall(require, "lspconfig")
 local ok_telescope, _ = pcall(require, "telescope")
 local ok_signature, _ = pcall(require, "lsp_signature")
 local ok_trouble, trouble = pcall(require, "trouble")
@@ -163,6 +163,11 @@ require("lspconfig").dockerls.setup({
 })
 
 require("lspconfig").hls.setup({
+  capabilities = capabilities,
+  on_attach = on_attach,
+})
+
+require("lspconfig").texlab.setup({
   capabilities = capabilities,
   on_attach = on_attach,
 })
