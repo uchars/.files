@@ -19,7 +19,6 @@ require("nvim-treesitter.configs").setup({
     "go",
     "c",
     "cpp",
-    -- "lua",
     "markdown",
     "markdown_inline",
     "python",
@@ -34,12 +33,9 @@ require("nvim-treesitter.configs").setup({
     "sql",
     "css",
     "latex",
-    -- "haskell",
+    "xml",
   }),
   auto_install = false,
-  autotag = {
-    enable = true,
-  },
   highlight = { enable = true },
   indent = { enable = true },
   incremental_selection = {
@@ -53,5 +49,13 @@ require("nvim-treesitter.configs").setup({
   },
   playground = {
     enable = true,
+  },
+})
+
+require("nvim-ts-autotag").setup({
+  opts = {
+    enable_close = true,
+    enable_rename = true,
+    enable_close_on_slash = true,
   },
 })

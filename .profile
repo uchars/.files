@@ -34,3 +34,4 @@ command -v setxkbmap >/dev/null 2>&1 && setxkbmap us
 if ! [ -d "/tmp/scratch" ]; then
 	mkdir /tmp/scratch
 fi
+. "$HOME/.cargo/env"

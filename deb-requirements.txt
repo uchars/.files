@@ -1,6 +1,16 @@
+libssl-dev
 libx11-dev
 libxft-dev
 libxinerama-dev
+libxpm-dev
+libjpeg-dev
+libpng-dev
+libgif-dev
+libtiff-dev
+libgtk2.0-dev
+libncurses-dev
+libgnutls30
+gnutls-dev
 build-essential
 ripgrep
 python3.12-venv
@@ -15,3 +25,10 @@ redshift
 feh
 texlive-full
 latexmk
+zathura
+mpv
+texinfo
+automake
+autoconf
+pandoc
+jq

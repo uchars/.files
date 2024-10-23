@@ -1,6 +1,15 @@
 #!/bin/bash
 source $HOME/.config/alias.sh
 
+get_ram_usage() {
+    total=$(grep MemTotal /proc/meminfo | awk '{print $2}')
+    available=$(grep MemAvailable /proc/meminfo | awk '{print $2}')
+    used=$((total - available))
+    total_mb=$((total / 1024))
+    used_mb=$((used / 1024))
+    echo "$used_mb/$total_mb MB"
+}
+
 while true; do
     BAT_CAPACITY=$(cat /sys/class/power_supply/BAT1/capacity)
     BAT_STATUS=$(cat /sys/class/power_supply/BAT1/status)
@@ -18,6 +27,6 @@ while true; do
     else
         SOUND_MUTED=""
     fi
-    xsetroot -name "$SPOTIFY_STR $SOUND_VOLUME$SOUND_MUTED | $BAT_CAPACITY% ($BAT_STATUS) | $(date)"
+    xsetroot -name "$SPOTIFY_STR VOL: $SOUND_VOLUME$SOUND_MUTED | RAM: $(get_ram_usage) | BAT: $BAT_CAPACITY% ($BAT_STATUS) | $(date)"
     sleep 1
 done

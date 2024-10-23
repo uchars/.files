@@ -1,2 +1,10 @@
 secret.sh
 proxy.sh
+auto-save-list/
+elpa/
+eshell/
+*~
+projectile-bookmarks.eld
+projects
+recentf
+transient/

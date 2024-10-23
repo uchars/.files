@@ -93,6 +93,9 @@ vim.keymap.set("n", "<C-h>", "<C-w>h")
 vim.keymap.set("n", "<C-j>", "<C-w>j")
 vim.keymap.set("n", "<C-k>", "<C-w>k")
 vim.keymap.set("n", "<C-l>", "<C-w>l")
+vim.keymap.set("n", ";a", "aä<ESC>")
+vim.keymap.set("n", ";o", "aö<ESC>")
+vim.keymap.set("n", ";u", "aü<ESC>")
 
 vim.api.nvim_create_user_command("W", function()
 	vim.cmd("w")
@@ -122,9 +125,9 @@ vim.api.nvim_create_user_command("Minimal", function()
 	vim.api.nvim_set_keymap("n", "<C-p>", [[:lua FindFile()<CR>]], { noremap = true, silent = true })
 end, { nargs = 0 })
 
-local ok, _ = pcall(require, "tokyonight")
+local ok, _ = pcall(require, "gruvbox")
 if ok then
-	vim.cmd([[colorscheme tokyonight]])
+	vim.cmd([[colorscheme gruvbox]])
 else
 	vim.cmd([[colorscheme solarized8]])
 end

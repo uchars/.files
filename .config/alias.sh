@@ -2,7 +2,6 @@
 alias v="nvim"
 alias nv="nvim"
 alias vm="NVIM_MINIMAL=YES nvim"
-alias mv="NVIM_MINIMAL=YES nvim"
 
 # git
 alias gs="git status"
@@ -35,7 +34,7 @@ alias ..="cd .."
 alias vol="amixer set Master --quiet"
 alias mute="amixer set Master 1+ toggle --quiet"
 
-# spotify
+# media
 alias stitle="dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:org.mpris.MediaPlayer2.Player string:Metadata | sed -n '/title/{n;p}' | cut -d '\"' -f 2"
 alias snext="dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next > /dev/null && stitle"
 alias sstate="dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'PlaybackStatus' | grep -oE '(Playing|Paused)'"
@@ -46,6 +45,7 @@ alias splay="dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/
 alias srep="dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Repeat > /dev/null && echo 'repeating stitle'"
 alias sprev="dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous > /dev/null && stitle"
 alias sp=sprev
+alias yt="mpv --ytdl-raw-options='cookies=$HOME/Downloads/yt_cookies.txt'"
 
 # browser & programs
 alias bt="blueman-manager&"
@@ -54,5 +54,13 @@ alias draw="brave-browser excalidraw.com&"
 # system
 alias lock="dm-tool lock"
 alias o="xdg-open"
-alias brightness="xrandr -q | grep ' connected'"
+set_brightness() {
+    xrandr --output eDP --brightness $1
+}
+alias brightness="set_brightness"
 alias ram="free -h --si"
+mirror_monitors() {
+    xrandr --output $1 --auto --same-as $2
+}
+alias mirror="mirror_monitors"
+alias vpn="/opt/cisco/secureclient/bin/vpnui"

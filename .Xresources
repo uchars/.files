@@ -1,0 +1,4 @@
+Emacs.background: #000000
+Emacs.mode-line.attributeForeground: #000000
+Emacs.mode-line.attributeBackground: #000000
+Emacs.mode-line.attributeBox: (:line-width 2 :color "#073642")

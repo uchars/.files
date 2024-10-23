@@ -32,8 +32,25 @@ require("lazy").setup({
 	{ "xiyaowong/transparent.nvim", commit = "fd35a46" },
 
 	{
-		"kkoomen/vim-doge",
-		tag = "v4.7.0",
+		"lervag/vimtex",
+		lazy = false,
+		tag = "v2.15",
+		init = function()
+			vim.g.vimtex_view_method = "zathura"
+			vim.g.vimtex_compiler_method = "vimtex_compiler_method"
+			vim.g.maplocalleader = ";"
+		end,
+	},
+
+	{
+		"danymat/neogen",
+		config = function()
+			require("neogen").setup({})
+			vim.keymap.set("n", "<leader>ng", function()
+				require("neogen").generate({})
+			end)
+		end,
+		tag = "2.19.4",
 	},
 	{
 		"neovim/nvim-lspconfig",
@@ -99,7 +116,6 @@ require("lazy").setup({
 		"nvim-telescope/telescope.nvim",
 		branch = "0.1.x",
 		dependencies = {
-			"octarect/telescope-menu.nvim",
 			"nvim-lua/plenary.nvim",
 			"ThePrimeagen/git-worktree.nvim",
 			{
@@ -120,9 +136,13 @@ require("lazy").setup({
 			"nvim-treesitter/nvim-treesitter-context",
 			-- { dir = "$HOME/src/nvim-treesitter-context" },
 			"nvim-treesitter/playground",
-			"windwp/nvim-ts-autotag",
 		},
 		build = ":TSUpdate",
+	},
+
+	{
+		"windwp/nvim-ts-autotag",
+		commit = "e239a56",
 	},
 
 	"ThePrimeagen/harpoon",
@@ -132,8 +152,6 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<CR>")
 		end,
 	},
-
-	{ "norcalli/nvim-colorizer.lua" },
 
 	{
 		"iamcco/markdown-preview.nvim",

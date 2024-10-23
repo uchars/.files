@@ -4,7 +4,7 @@ local act = wezterm.action
 local M = {}
 
 local fd = os.getenv("HOME") .. "/.local/bin/fd/fd"
-local rootPath = os.getenv("HOME") .. "/Documents/edu"
+local rootPath = os.getenv("HOME") .. "/Documents"
 local dotfiles = os.getenv("HOME") .. "/.files"
 local work = os.getenv("HOME") .. "/work"
 local src = os.getenv("HOME") .. "/src"
@@ -22,12 +22,13 @@ M.toggle = function(window, pane)
     ".",
     "-E",
     ".git",
-    "--max-depth=3",
+    "--max-depth=5",
     rootPath,
     dotfiles,
     work,
     src,
     tmp,
+    notes,
   })
 
   if not success then

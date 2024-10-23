@@ -1,0 +1,11 @@
+[Default Applications]
+application/pdf=zathura.desktop;
+
+[Desktop Entry]
+Name=Zathura
+Exec=zathura %U
+Type=Application
+MimeType=application/pdf;
+Terminal=false
+Categories=Office;Viewer;
+

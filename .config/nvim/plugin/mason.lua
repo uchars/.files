@@ -1,7 +1,3 @@
-if vim.fn.system("nixos-version") ~= "" then
-	-- do not need mason on nixos.
-	return
-end
 local ok, _ = pcall(require, "mason")
 local ok_lsp, mason_lsp = pcall(require, "mason-lspconfig")
 local ok_formatter, mason_format = pcall(require, "mason-null-ls")
@@ -40,6 +36,7 @@ end
 
 if cargo_installed then
 	servers.rust_analyzer = {}
+	servers.gitlab_ci_ls = {}
 	if not is_windows then
 		servers.nil_ls = {}
 	end
