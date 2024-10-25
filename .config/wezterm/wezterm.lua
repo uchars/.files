@@ -60,7 +60,7 @@ config.launch_menu = launch_menu
 
 config.inactive_pane_hsb = { saturation = 0.5, brightness = 0.5 }
 config.disable_default_key_bindings = true
-config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 2000 }
+config.leader = { key = "y", mods = "CTRL", timeout_milliseconds = 2000 }
 config.keys = {
   {
     key = "L",

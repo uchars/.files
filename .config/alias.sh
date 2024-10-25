@@ -64,3 +64,4 @@ mirror_monitors() {
 }
 alias mirror="mirror_monitors"
 alias vpn="/opt/cisco/secureclient/bin/vpnui"
+alias ts="~/.local/bin/tmux-sessionizer.sh"
