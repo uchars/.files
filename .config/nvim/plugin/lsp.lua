@@ -87,7 +87,7 @@ require("lspconfig").tsserver.setup({
 })
 
 if vim.fn.executable("ccls") == 1 then
-  require("lspconfig").ccls.setup({
+  require("lspconfig").clangd.setup({
     capabilities = capabilities,
     on_attach = on_attach,
   })
