@@ -103,10 +103,6 @@ require("lazy").setup({
 		tag = "release",
 	},
 
-	"navarasu/onedark.nvim",
-	"folke/tokyonight.nvim",
-	"rebelot/kanagawa.nvim",
-
 	{
 		"numToStr/Comment.nvim",
 		tag = "v0.8.0",

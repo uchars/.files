@@ -29,6 +29,14 @@ local formatters = {
 	latexindent = {},
 }
 
+if unzip_installed and is_windows then
+	servers.zls = {}
+end
+
+if not is_windows then
+	servers.zls = {}
+end
+
 if unzip_installed or is_windows then
 	servers.clangd = {}
 	formatters.asmfmt = {}

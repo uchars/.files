@@ -177,6 +177,11 @@ require("lspconfig").gitlab_ci_ls.setup({
   on_attach = on_attach,
 })
 
+require("lspconfig").zls.setup({
+  capabilities = capabilities,
+  on_attach = on_attach,
+})
+
 if ok_fg then
   fidget.setup({
     window = { blend = 0 },
