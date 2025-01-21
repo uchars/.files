@@ -4,7 +4,7 @@
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=$(find ~/.files ~/work ~/Documents/edu ~/Documents/notes ~/Documents/src -mindepth 0 -maxdepth 2 -type d | fzf)
+    selected=$(find ~/.files ~/work ~/Documents ~/Documents/notes ~/Documents/src -mindepth 0 -maxdepth 2 -type d | fzf)
 fi
 
 if [[ -z $selected ]]; then

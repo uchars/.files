@@ -13,3 +13,7 @@ fi
 if [ -d "$HOME/.config/emacs/bin" ]; then
 	PATH="$HOME/.config/emacs/bin:$PATH"
 fi
+
+if [ -d "/usr/lib64/GNUstep/Applications/WPrefs.app" ]; then
+	PATH="/usr/lib64/GNUstep/Applications/WPrefs.app/:$PATH"
+fi

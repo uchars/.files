@@ -37,7 +37,7 @@ require("lazy").setup({
 		tag = "v2.15",
 		init = function()
 			vim.g.vimtex_view_method = "zathura"
-			vim.g.vimtex_compiler_method = "vimtex_compiler_method"
+			vim.g.vimtex_compiler_method = "latexmk"
 			vim.g.maplocalleader = ";"
 		end,
 	},

@@ -1,3 +1,6 @@
 deb-requirements.txt
 README.md
+archsetup.sh
 LICENSE
+.local/share
+fonts*

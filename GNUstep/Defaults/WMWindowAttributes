@@ -1,0 +1,14 @@
+{
+  firefox.Firefox = {
+    Icon = firefox.Firefox.xpm;
+  };
+  default.default = {
+    Icon = default.default.xpm;
+  };
+  Logo.WMDock = {
+    Icon = Penguin.xpm;
+  };
+  groupLeader.WPrefs = {
+    Icon = groupLeader.WPrefs.xpm;
+  };
+}

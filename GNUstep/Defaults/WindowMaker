@@ -1,0 +1,112 @@
+{
+  FrameBorderColor = "#b3b3b0";
+  FTitleColor = "#fdfdfd";
+  MenuDisabledColor = "#979797";
+  IconTitleBack = "#20202e";
+  HotCornerEdge = 2;
+  PixmapPath = (
+    "/home/sterz_n/GNUstep/Library/WindowMaker/Pixmaps",
+    "/home/sterz_n/GNUstep/Library/WindowMaker/Backgrounds",
+    "/home/sterz_n/GNUstep/Library/WindowMaker/CachedPixmaps",
+    "~/pixmaps",
+    "/usr/share/WindowMaker/Pixmaps",
+    "/usr/share/WindowMaker/Backgrounds",
+    "/usr/share/pixmaps"
+  );
+  FTitleBack = (hgradient, "rgb:30/32/3e", black);
+  MaximizeKey = "Mod4+Up";
+  MiniwindowPreviewBalloons = YES;
+  ClipTitleFont = "Verdana:bold:pixelsize=10";
+  IconTitleFont = "Arial,sans serif:pixelsize=9";
+  PartialCaptureKey = "Mod4+S";
+  LargeDisplayFont = "Trebuchet MS,sans serif:pixelsize=24";
+  CenterKey = None;
+  IconificationStyle = none;
+  MoveDisplay = none;
+  IconTitleColor = "#fdfdfd";
+  MoveToWorkspace2Key = "Shift+Mod4+2";
+  MenuTitleColor = "#fdfdfd";
+  HotCorners = YES;
+  MenuTitleFont = "Trebuchet MS,sans serif:bold:pixelsize=12";
+  MoveTo6to12Head = None;
+  DbClickFullScreen = YES;
+  IconPosition = tlh;
+  ShadeSpeed = ultrafast;
+  WorkspaceBack = (
+    tpixmap,
+    "/home/sterz_n/GNUstep/Library/WindowMaker/Backgrounds/firewatch.png",
+    gray20
+  );
+  HighlightTextColor = "#000000";
+  EnforceIconMargin = YES;
+  WindowSnapping = YES;
+  AutoArrangeIcons = YES;
+  ClipTitleColor = "#fdfdfd";
+  MoveTo12to6Head = None;
+  HotCornerActions = (None, None, None, None);
+  FrameFocusedBorderColor = "#b3b3b0";
+  WindowTitleFont = "Trebuchet MS,sans serif:weight=200:pixelsize=12";
+  Workspace8Key = None;
+  WindowPlaceOrigin = (915, 454);
+  Workspace9Key = None;
+  LHMaximizeKey = "Mod4+Left";
+  ResizebarBack = (solid, "rgb:a0/a2/ae");
+  Workspace4Key = "Mod4+4";
+  MiniPreviewSize = 232;
+  Workspace5Key = "Mod4+5";
+  KbdModeLock = NO;
+  Workspace6Key = None;
+  Workspace7Key = None;
+  Workspace1Key = "Mod4+1";
+  CloseRootMenuByLeftOrRightMouseClick = NO;
+  Workspace2Key = "Mod4+2";
+  Workspace3Key = "Mod4+3";
+  MoveToWorkspace1Key = "Shift+Mod4+1";
+  RHMaximizeKey = "Mod4+Right";
+  FrameSelectedBorderColor = "#fcfcfc";
+  MiniaturizeKey = "Mod4+Down";
+  FocusNextKey = "Mod4+J";
+  ToggleKbdModeKey = "Mod4+space";
+  DragMaximizedWindow = RestoreGeometry;
+  OpaqueResize = YES;
+  MenuTextBack = (hgradient, "rgb:50/5a/5e", "rgb:20/2a/2e");
+  WindowPlacement = cascade;
+  HotCornerDelay = 250;
+  MenuTextColor = "#fdfdfd";
+  SingleClickLaunch = YES;
+  IconBack = (hgradient, "rgb:30/32/3e", black);
+  AntialiasedText = YES;
+  MoveToWorkspace5Key = "Shift+Mod4+5";
+  FocusPrevKey = "Mod4+K";
+  NewStyle = old;
+  WorkspaceNameDisplayPosition = top;
+  IconSize = 80;
+  MenuTextFont = "Trebuchet MS,sans serif:pixelsize=12";
+  AdvanceToNewWorkspace = YES;
+  MenuTitleBack = (hgradient, "rgb:30/32/3e", black);
+  SnapToTopMaximizesFullscreen = YES;
+  CloseKey = "Shift+Mod4+C";
+  HighlightColor = "#fdfdfd";
+  Workspace10Key = None;
+  MoveToWorkspace3Key = "Shift+Mod4+3";
+  CClipTitleColor = "#979797";
+  IconSlideSpeed = ultrafast;
+  IconPath = (
+    "/home/sterz_n/GNUstep/Library/Icons",
+    "/home/sterz_n/GNUstep/Library/WindowMaker/Pixmaps",
+    "/home/sterz_n/GNUstep/Library/WindowMaker/CachedPixmaps",
+    "~/pixmaps",
+    "/usr/share/WindowMaker/Icons",
+    "/usr/share/WindowMaker/Pixmaps",
+    "/usr/share/pixmaps"
+  );
+  ModifierKey = Mod4;
+  PTitleBack = (hgradient, "rgb:70/72/7e", "rgb:45/47/4e");
+  UTitleColor = "#333333";
+  ViKeyMenus = YES;
+  UTitleBack = (hgradient, "rgb:a0/a2/ae", "rgb:90/92/9e");
+  CirculateRaise = YES;
+  PTitleColor = "#fdfdfd";
+  ResizeDisplay = none;
+  MoveToWorkspace4Key = "Shift+Mod4+4";
+}

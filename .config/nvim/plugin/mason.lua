@@ -56,7 +56,7 @@ if go_installed then
 end
 
 if py_installed then
-	servers.cmake = {}
+	--servers.cmake = {}
 	servers.pylsp = {}
 	formatters.autopep8 = {}
 	formatters.clang_format = {}
