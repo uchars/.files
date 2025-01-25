@@ -11,3 +11,4 @@ transient/
 GNUstep/Library/WindowMaker/Screenshots/
 .local/share/*
 fonts.*
+WMState*
