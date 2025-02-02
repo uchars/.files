@@ -2,6 +2,7 @@
 application/pdf=zathura.desktop;
 x-scheme-handler/http=brave-browser.desktop
 x-scheme-handler/https=brave-browser.desktop
+x-scheme-handler/fcade=fcade-quark.desktop
 
 [Desktop Entry]
 Name=Zathura

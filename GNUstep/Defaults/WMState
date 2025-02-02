@@ -43,6 +43,28 @@
         Lock = No;
         PasteCommand = "steam %s";
         Command = steam;
+      },
+      {
+        Forced = No;
+        Name = thunar.Thunar;
+        DropCommand = "thunar %d";
+        BuggyApplication = No;
+        AutoLaunch = No;
+        Position = "0,4";
+        Lock = No;
+        PasteCommand = "thunar %s";
+        Command = thunar;
+      },
+      {
+        Forced = No;
+        Name = "transmission-qt.transmission";
+        DropCommand = "transmission-qt %d";
+        BuggyApplication = No;
+        AutoLaunch = No;
+        Position = "0,5";
+        Lock = No;
+        PasteCommand = "transmission-qt %s";
+        Command = "transmission-qt";
       }
     );
     Lowered = Yes;
@@ -89,6 +111,28 @@
         Lock = No;
         PasteCommand = "steam %s";
         Command = steam;
+      },
+      {
+        Forced = No;
+        Name = thunar.Thunar;
+        DropCommand = "thunar %d";
+        BuggyApplication = No;
+        AutoLaunch = No;
+        Position = "0,4";
+        Lock = No;
+        PasteCommand = "thunar %s";
+        Command = thunar;
+      },
+      {
+        Forced = No;
+        Name = "transmission-qt.transmission";
+        DropCommand = "transmission-qt %d";
+        BuggyApplication = No;
+        AutoLaunch = No;
+        Position = "0,5";
+        Lock = No;
+        PasteCommand = "transmission-qt %s";
+        Command = "transmission-qt";
       }
     );
   };

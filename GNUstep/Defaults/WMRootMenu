@@ -36,6 +36,7 @@
         EXEC,
         "/usr/bin/rofi -show drun"
       ),
+      ("Switch kbd layout", SHORTCUT, "Control+space", EXEC, kbdswitch.sh),
       (top, EXEC, "xterm -e top")
     )
   ),

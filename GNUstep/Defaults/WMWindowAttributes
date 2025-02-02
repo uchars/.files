@@ -1,9 +1,24 @@
 {
+  default.default = {
+    Icon = default.default.xpm;
+  };
   firefox.Firefox = {
     Icon = firefox.Firefox.xpm;
   };
-  default.default = {
-    Icon = default.default.xpm;
+  fsviewer.FSViewer = {
+    Icon = fsviewer.FSViewer.xpm;
+  };
+  steam_app_1364780.steam_app_1364780 = {
+    Icon = steam_app_1364780.steam_app_1364780.xpm;
+  };
+  "transmission-qt.transmission" = {
+    Icon = "transmission-qt.transmission.xpm";
+  };
+  fileViewer.FileViewer = {
+    AlwaysUserIcon = No;
+  };
+  Thunar.Thunar = {
+    Icon = Bookshelf.xpm;
   };
   Logo.WMDock = {
     Icon = Penguin.xpm;
