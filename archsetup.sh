@@ -10,7 +10,7 @@ _pacman_install() {
 
 _aur_install() {
 	for pkg in "$@"; do if ! yay -Q "$pkg" &>/dev/null; then
-			yay -S "$pkg" --noconfirm
+			yay -S "$pkg" --noconfirm --needed
 		fi
 	done
 }
@@ -19,8 +19,8 @@ _aur_install() {
 install_requirements() {
 	basics=("man" "base-devel" "git" "tmux" "neovim"  "npm" "unzip" "python" "htop")
 	fonts=("ttf-font-awesome" "xorg-font-util" "xorg-fonts-misc" "noto-fonts" "xorg-fonts-misc")
-	desktop=("firefox" "xorg-server"  "alacritty" "xorg-xinit" "pavucontrol" "flameshot" "discord" "steam" "bitwarden" "xclip" "networkmanager-openconnect" "networkmanager" "network-manager-applet" "scrot" "feh" "nextcloud-client" "zathura" "yubikey-manager" "zathura-pdf-mupdf" "gvfs" "transmission-qt" "vlc" "mpv" "picom" "ly")
-	utils=("bluez" "bluez-utils" "blueman" "bluez-utils" "arandr" "fzf" "ripgrep" "screenfetch" "tealdeer" "zip" "libfido2" "python-virtualenv" "mtpfs" "android-udev" "plymouth" "cantarell-fonts")
+	desktop=("firefox" "xorg-server" "alacritty" "xorg-xinit" "pavucontrol" "flameshot" "discord" "steam" "bitwarden" "xclip" "networkmanager-openconnect" "networkmanager" "network-manager-applet" "scrot" "feh" "nextcloud-client" "zathura" "yubikey-manager" "zathura-pdf-mupdf" "gvfs" "transmission-qt" "vlc" "mpv" "picom" "ly" "cups" "cups-pdf")
+	utils=("bluez" "bluez-utils" "blueman" "bluez-utils" "arandr" "fzf" "ripgrep" "screenfetch" "tealdeer" "zip" "libfido2" "python-virtualenv" "mtpfs" "android-udev" "plymouth" "cantarell-fonts" "tumbler")
 	uni_stuff=("stack" "texlive-basic" "texlive-latex" "texlive-latexrecommended" "texlive-latexextra" "texlive-mathscience" "pandoc")
 
 	_pacman_install ${basics[@]}
@@ -47,14 +47,15 @@ enable_services() {
 	sudo systemctl enable pcscd --now
 	sudo usermod -aG lp $USER
 	sudo usermod -aG adbusers $USER
+	sudo systemctl enable cups --now
 }
 
 nvidia() {
-	drivers=("nvidia")
+	drivers=("nvidia-open nvidia-utils")
 	_pacman_install ${drivers[@]}
 }
 
-aur_requrements() {
+aur_programs() {
 	packages=("spotify" "ghcup-hs-bin" "yubico-authenticator-bin")
 	_aur_install ${packages[@]}
 }
@@ -70,9 +71,10 @@ aur_setup() {
 }
 
 kde_setup() {
-	packages=("plasma")
+	packages=("plasma system-config-printer")
 	_pacman_install ${packages[@]}
 	sudo systemctl enable ly --now --force
+	_blueman
 }
 
 windowmaker_setup() {
@@ -85,11 +87,80 @@ windowmaker_setup() {
 	sudo systemctl enable ly --now
 }
 
+enable_wol() {
+	local device="$1"
+    packages=("ethtool")
+    _pacman_install ${packages[@]}
+    if ! ip link show "$device" &>/dev/null; then
+        echo "Error: Network interface '$device' not found."
+        return 1
+    fi
+
+    NAME=$(nmcli -t -f NAME,DEVICE connection show | awk -F: -v dev="$device" '$2 == dev {print $1}')
+
+    if [[ -n "$NAME" ]]; then
+	sudo nmcli c modify "$NAME" 802-3-ethernet.wake-on-lan magic
+	echo "Enabled WOL for $device ($NAME)"
+    else
+        echo "No connection found for device: $device" >&2
+        return 1
+    fi
+}
+
+usage() {
+	echo "Usage:"
+	echo "--windowmaker     Install Windowmaker"
+	echo "--kde             Install KDE"
+	echo "--nvidia          NVIDIA Graphics card"
+	echo "--gaming          Gaming Stuff"
+	echo "--aur             Enable AUR"
+	echo "--wol IFACE       Enable WOL for interface IFACE"
+	exit 0
+}
+
+while [[ $# -gt 0 ]] do
+	case $1 in
+		--windowmaker)
+			windowmaker_setup
+			shift
+			;;
+		--kde)
+			kde_setup
+			shift
+			;;
+		--gaming)
+			gaming
+			shift
+			;;
+		--aur)
+			aur_setup
+			aur_programs
+			shift
+			;;
+		--nvidia)
+			nvidia
+			shift
+			;;
+		--wol)
+			if [[ -n "$2" ]]; then
+				enable_wol "$2"
+				shift 2
+			else
+				echo "Error: --wol requires an argument."
+				usage
+				exit 1
+			fi
+			;;
+		-h|--help)
+			usage
+			shift
+			;;
+		*)
+			echo "Invalid option: $1"
+			usage
+			;;
+	esac
+done
+
 install_requirements
-aur_setup
-aur_requrements
-nvidia
-# windowmaker_setup
-kde_setup
 enable_services
-gaming
