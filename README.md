@@ -41,3 +41,23 @@ konsave -e PROFILE_NAME
 ```
 
 Copy the `.knsv` to the `./kde_profiles` folder.
+
+## Boot Splash screen
+
+### Prepare
+
+Plymouth should have been installed using `./archsetup.sh`
+
+Use gimp to scale your boot picture to the dimensions of your monitor (3440x1440 in my case).
+
+### Install
+
+In `/etc/mkinitcpio.conf` add `plymouth` after `udev`
+
+Copy the cropped image to `/usr/share/plymouth/themes/spinner/background-tile.png`
+
+```sh
+plymouth-set-default-theme -R spinner
+```
+
+Might have to add `ShowDelay=0` to `[Daemon]` in `/etc/plymouth/plymouthd.conf`
