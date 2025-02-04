@@ -8,6 +8,12 @@ _pacman_install() {
 	done
 }
 
+_pip_install() {
+	for pkg in "$@"; do
+		pipx install "$pkg"
+	done
+}
+
 _aur_install() {
 	for pkg in "$@"; do if ! yay -Q "$pkg" &>/dev/null; then
 			yay -S "$pkg" --noconfirm --needed
@@ -19,19 +25,17 @@ _aur_install() {
 install_requirements() {
 	basics=("man" "base-devel" "git" "tmux" "neovim"  "npm" "unzip" "python" "htop")
 	fonts=("ttf-font-awesome" "xorg-font-util" "xorg-fonts-misc" "noto-fonts" "xorg-fonts-misc")
-	desktop=("firefox" "xorg-server" "alacritty" "xorg-xinit" "pavucontrol" "flameshot" "discord" "steam" "bitwarden" "xclip" "networkmanager-openconnect" "networkmanager" "network-manager-applet" "scrot" "feh" "nextcloud-client" "zathura" "yubikey-manager" "zathura-pdf-mupdf" "gvfs" "transmission-qt" "vlc" "mpv" "picom" "ly" "cups" "cups-pdf")
-	utils=("bluez" "bluez-utils" "blueman" "bluez-utils" "arandr" "fzf" "ripgrep" "screenfetch" "tealdeer" "zip" "libfido2" "python-virtualenv" "mtpfs" "android-udev" "plymouth" "cantarell-fonts" "tumbler")
-	uni_stuff=("stack" "texlive-basic" "texlive-latex" "texlive-latexrecommended" "texlive-latexextra" "texlive-mathscience" "pandoc")
+	desktop=("firefox" "xorg-server" "alacritty" "xorg-xinit" "pavucontrol" "flameshot" "discord" "bitwarden" "xclip" "networkmanager" "scrot" "feh" "nextcloud-client" "zathura" "yubikey-manager" "zathura-pdf-mupdf" "gvfs" "transmission-qt" "vlc" "mpv" "picom" "ly" "cups" "cups-pdf")
+	utils=("bluez" "bluez-utils" "fzf" "ripgrep" "screenfetch" "tealdeer" "zip" "libfido2" "python-virtualenv" "mtpfs" "android-udev" "plymouth" "cantarell-fonts")
 
 	_pacman_install ${basics[@]}
 	_pacman_install ${fonts[@]}
 	_pacman_install ${desktop[@]}
 	_pacman_install ${utils[@]}
-	_pacman_install ${uni_stuff[@]}
 }
 
-gaming() {
-	packages=("gamemode" "gamescope" "lib32-gamemode" "wine" "mangohud")
+gaming_setup() {
+	packages=("gamemode" "gamescope" "lib32-gamemode" "wine" "mangohud" "steam")
 	_pacman_install ${packages[@]}
 	sudo usermod -aG gamemode $USER
 	yay_packages=("fightcade2")
@@ -51,7 +55,7 @@ enable_services() {
 }
 
 nvidia() {
-	drivers=("nvidia-open nvidia-utils")
+	drivers=("nvidia-open" "nvidia-utils")
 	_pacman_install ${drivers[@]}
 }
 
@@ -71,10 +75,12 @@ aur_setup() {
 }
 
 kde_setup() {
-	packages=("plasma system-config-printer")
+	packages=("plasma system-config-printer" "tumbler")
 	_pacman_install ${packages[@]}
 	sudo systemctl enable ly --now --force
 	_blueman
+	aur_packages=("konsave")
+	_aur_install ${aur_packages[@]}
 }
 
 windowmaker_setup() {
@@ -85,6 +91,16 @@ windowmaker_setup() {
 	echo "wmaker" > $HOME/.config/desktop.sh
 	_blueman
 	sudo systemctl enable ly --now
+}
+
+uni_setup() {
+	packages=("texlive-basic" "texlive-latex" "texlive-latexrecommended" "texlive-latexextra" "texlive-mathscience" "pandoc" "networkmanager-openconnect")
+	_pacman_install ${packages[@]}
+}
+
+haskell_setup() {
+	packages=("stack")
+	_pacman_install ${packages[@]}
 }
 
 enable_wol() {
@@ -114,6 +130,8 @@ usage() {
 	echo "--nvidia          NVIDIA Graphics card"
 	echo "--gaming          Gaming Stuff"
 	echo "--aur             Enable AUR"
+	echo "--haskell         Install haskell things :("
+	echo "--uni             Install Uni things (mostly TeXLive)"
 	echo "--wol IFACE       Enable WOL for interface IFACE"
 	exit 0
 }
@@ -129,7 +147,7 @@ while [[ $# -gt 0 ]] do
 			shift
 			;;
 		--gaming)
-			gaming
+			gaming_setup
 			shift
 			;;
 		--aur)
@@ -139,6 +157,14 @@ while [[ $# -gt 0 ]] do
 			;;
 		--nvidia)
 			nvidia
+			shift
+			;;
+		--haskell)
+			haskell_setup
+			shift
+			;;
+		--uni)
+			uni_setup
 			shift
 			;;
 		--wol)
