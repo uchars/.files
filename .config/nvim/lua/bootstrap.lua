@@ -114,13 +114,6 @@ require("lazy").setup({
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"ThePrimeagen/git-worktree.nvim",
-			{
-				"nvim-telescope/telescope-fzf-native.nvim",
-				build = "make",
-				cond = function()
-					return vim.fn.executable("make") == 1
-				end,
-			},
 		},
 	},
 
@@ -146,20 +139,6 @@ require("lazy").setup({
 		"mbbill/undotree",
 		config = function()
 			vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<CR>")
-		end,
-	},
-
-	{
-		"iamcco/markdown-preview.nvim",
-		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-		ft = { "markdown" },
-		build = function(plugin)
-			vim.fn["mkdp#util#install"]()
-		end,
-		init = function()
-			if vim.fn.executable("npx") then
-				vim.g.mkdp_filetypes = { "markdown" }
-			end
 		end,
 	},
 })

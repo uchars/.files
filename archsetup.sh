@@ -24,8 +24,8 @@ _aur_install() {
 
 install_requirements() {
 	basics=("man" "base-devel" "git" "tmux" "neovim"  "npm" "unzip" "python" "htop")
-	fonts=("ttf-font-awesome" "xorg-font-util" "xorg-fonts-misc" "noto-fonts" "xorg-fonts-misc")
-	desktop=("firefox" "xorg-server" "alacritty" "xorg-xinit" "pavucontrol" "flameshot" "discord" "bitwarden" "xclip" "networkmanager" "scrot" "feh" "nextcloud-client" "zathura" "yubikey-manager" "zathura-pdf-mupdf" "gvfs" "transmission-qt" "vlc" "mpv" "picom" "ly" "cups" "cups-pdf")
+	fonts=("ttf-font-awesome" "xorg-font-util" "xorg-fonts-misc" "noto-fonts" "xorg-fonts-misc" "noto-fonts-cjk" "ttf-noto-nerd")
+	desktop=("firefox" "chromium" "xorg-server" "alacritty" "xorg-xinit" "pavucontrol" "discord" "bitwarden" "xclip" "networkmanager" "scrot" "feh" "nextcloud-client" "zathura" "yubikey-manager" "zathura-pdf-mupdf" "gvfs" "vlc" "mpv" "picom" "cups" "cups-pdf" "gimp" "obs-studio" "thunderbird" "solaar")
 	utils=("bluez" "bluez-utils" "fzf" "ripgrep" "screenfetch" "tealdeer" "zip" "libfido2" "python-virtualenv" "mtpfs" "android-udev" "plymouth" "cantarell-fonts")
 
 	_pacman_install ${basics[@]}
@@ -75,9 +75,9 @@ aur_setup() {
 }
 
 kde_setup() {
-	packages=("plasma system-config-printer" "tumbler")
+	packages=("plasma" "system-config-printer" "okular" "gwenview" "krita" "kmag" "filelight" "kcolorchooser" "partitionmanager" "dolphin" "ark" "isoimagewriter" "kcalc" "sddm")
 	_pacman_install ${packages[@]}
-	sudo systemctl enable ly --now --force
+	sudo systemctl enable sddm --now --force
 	_blueman
 	aur_packages=("konsave")
 	_aur_install ${aur_packages[@]}

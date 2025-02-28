@@ -4,23 +4,6 @@ if not ok then
   return
 end
 
-local function get_env_or_default(env, default)
-  if os.getenv(env) == nil then
-    return default
-  end
-  return os.getenv(env)
-end
-
-local function remove_nonexistant_dirs(dirs)
-  local valid = {}
-  for _, dir in pairs(dirs) do
-    if vim.fn.isdirectory(dir) ~= 0 then
-      table.insert(valid, dir)
-    end
-  end
-  return valid
-end
-
 require("telescope").setup({
   defaults = {
     file_ignore_patterns = { ".git/", ".cache/" },
@@ -44,9 +27,6 @@ require("telescope").setup({
   },
 })
 
-if fzf_ok then
-  require("telescope").load_extension("fzf")
-end
 require("telescope").load_extension("git_worktree")
 
 vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles)

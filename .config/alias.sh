@@ -9,7 +9,15 @@ alias gf="git fetch --all"
 alias gwip='git add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit -m "[WIP]: $(date)"'
 alias gundo="git reset HEAD~"
 alias gcm="git-credential-manager"
-alias gl="git log"
+alias gl="git log --pretty=format:'%C(yellow)%h%Cred%d - %Creset%s%Cblue - [%cn]' --decorate"
+alias gll="git log --pretty=format:'%C(yellow)%h%Cred%d - %Creset%s%Cblue - [%cn]' --decorate --numstat"
+alias gc="git commit"
+alias gpr="git pull --rebase"
+alias gpl="git pull"
+alias gps="git push"
+alias gd="git diff"
+alias ga="git add"
+alias gsub="git submodule"
 
 # apt
 alias agi="sudo apt-get install "
@@ -55,13 +63,14 @@ alias draw="brave-browser excalidraw.com&"
 alias lock="dm-tool lock"
 alias o="xdg-open"
 set_brightness() {
-    xrandr --output eDP --brightness $1
+	xrandr --output eDP --brightness $1
 }
 alias brightness="set_brightness"
 alias ram="free -h --si"
 mirror_monitors() {
-    xrandr --output $1 --auto --same-as $2
+	xrandr --output $1 --auto --same-as $2
 }
 alias mirror="mirror_monitors"
 alias vpn="/opt/cisco/secureclient/bin/vpnui"
 alias ts="~/.local/bin/tmux-sessionizer.sh"
+alias tmux="tmux -2"

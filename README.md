@@ -61,3 +61,7 @@ plymouth-set-default-theme -R spinner
 ```
 
 Might have to add `ShowDelay=0` to `[Daemon]` in `/etc/plymouth/plymouthd.conf`
+
+In `/boot/loader/entries/*.conf` add `video=3440x1440` to the `options` in order to change the resolution.
+
+In `/boot/loader/loader.conf` set timeout to `0` to disable the boot menu
