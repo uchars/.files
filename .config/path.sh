@@ -17,3 +17,7 @@ fi
 if [ -d "/usr/lib64/GNUstep/Applications/WPrefs.app" ]; then
 	PATH="/usr/lib64/GNUstep/Applications/WPrefs.app/:$PATH"
 fi
+
+if [ -d "$HOME/.ghcup/bin" ]; then
+	PATH="$HOME/.ghcup/bin:$PATH"
+fi
