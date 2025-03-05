@@ -39,7 +39,10 @@
   (load custom-file 'noerror 'nomessage)
   (global-set-key (kbd "<escape>")      'keyboard-escape-quit)
   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font"  :height 140)
+  (setq scroll-margin 8)
+  (setq scroll-conservatively 100)
   (setq use-short-answers t)
+  (setq global-hl-line-mode nil)
   (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
   :init
@@ -58,11 +61,6 @@
   (indent-tabs-mode -1)
   (global-hl-line-mode 1)
   (modify-coding-system-alist 'file "" 'utf-8))
-
-(use-package benchmark-init
-  :ensure t
-  :config
-  (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
 (use-package dired
   :ensure nil
@@ -177,6 +175,17 @@
   :config
   (setq indent-guide-char "│"))
 
+(use-package flycheck
+  :ensure t)
+
+(use-package lsp-mode
+  :ensure t
+  :config
+  (setq lsp-idle-delay 0.500)
+  (setq lsp-log-io nil)
+  :hook ((c++-mode . lsp-deferred))
+  :commands (lsp lsp-deferred))
+
 (use-package evil
   :ensure t
   :defer t
@@ -189,7 +198,60 @@
   :config
   (evil-set-undo-system 'undo-tree)
   (setq evil-leader/in-all-states t)
-  (setq evil-want-fine-undo t))
+  (setq evil-want-fine-undo t)
+
+  (evil-set-leader 'normal (kbd "SPC"))
+  (evil-set-leader 'visual (kbd "SPC"))
+
+  (evil-define-key 'normal 'global (kbd "C-b") 'dired-jump)
+  (evil-define-key 'normal 'global (kbd "C-u") 'n/evil-scroll-up)
+  (evil-define-key 'normal 'global (kbd "C-d") 'n/evil-scroll-down)
+  (evil-define-key 'normal 'global (kbd "[ e") 'flymake-goto-prev-error)
+  (evil-define-key 'normal 'global (kbd "] e") 'flymake-goto-next-error)
+  (evil-define-key 'normal 'global (kbd "C-p") 'projectile-find-file)
+
+  (evil-define-key 'normal emacs-lisp-mode-map (kbd "<leader> i") 'eval-buffer)
+
+  (evil-define-key 'normal dired-mode-map (kbd "<leader> RET") 'dired-find-file)
+  (evil-define-key 'normal dired-mode-map (kbd "<leader> j") 'dired-next-line)
+  (evil-define-key 'normal dired-mode-map (kbd "<leader> k") 'dired-previous-line)
+  (evil-define-key 'normal dired-mode-map (kbd "<leader> D") 'dired-do-delete)
+  (evil-define-key 'normal dired-mode-map (kbd "<leader> O") 'dired-do-open)
+  (evil-define-key 'normal dired-mode-map (kbd "<leader> -") 'dired-up-directory)
+  (evil-define-key 'normal dired-mode-map (kbd "<leader> q") 'quit-window)
+  (evil-define-key 'normal dired-mode-map (kbd "<leader> =") 'dired-diff)
+  (evil-define-key 'normal dired-mode-map (kbd "<leader> mm") 'dired-mark)
+  (evil-define-key 'normal dired-mode-map (kbd "<leader> mu") 'dired-unmark)
+  (evil-define-key 'normal dired-mode-map (kbd "<leader> mU") 'dired-unmark-all-marks)
+  (evil-define-key 'normal dired-mode-map (kbd "<leader> !") 'dired-do-shell-command)
+  (evil-define-key 'normal dired-mode-map (kbd "<leader> R") 'dired-do-rename)
+  (evil-define-key 'normal dired-mode-map (kbd "<leader> C") 'dired-do-copy)
+  (evil-define-key 'normal dired-mode-map (kbd "<leader> Z") 'dired-do-compress-to)
+
+  (evil-define-key 'normal 'global (kbd "<leader> /") 'swiper)
+  (evil-define-key 'normal 'global (kbd "<leader> r n") 'lsp-rename)
+  (evil-define-key 'normal 'global (kbd "<leader> p p") 'projectile-switch-project)
+  (evil-define-key 'normal 'global (kbd "<leader> p f") 'project-find-file)
+  (evil-define-key 'normal 'global (kbd "<leader> SPC") 'counsel-switch-buffer)
+  (evil-define-key 'normal 'global (kbd "<leader> g s") 'magit)
+  (evil-define-key 'normal 'global (kbd "<leader> g l") 'magit-log)
+  (evil-define-key 'normal 'global (kbd "<leader> m") 'harpoon-add-file)
+  (evil-define-key 'normal 'global (kbd "<leader> h l") 'harpoon-quick-menu-hydra)
+  (evil-define-key 'normal 'global (kbd "<leader> d 1") 'harpoon-delete-1)
+  (evil-define-key 'normal 'global (kbd "<leader> d 2") 'harpoon-delete-2)
+  (evil-define-key 'normal 'global (kbd "<leader> d 3") 'harpoon-delete-3)
+  (evil-define-key 'normal 'global (kbd "<leader> v t") 'vterm)
+  (evil-define-key 'normal 'global (kbd "<leader> 1") 'harpoon-go-to-1)
+  (evil-define-key 'normal 'global (kbd "<leader> 2") 'harpoon-go-to-2)
+  (evil-define-key 'normal 'global (kbd "<leader> 3") 'harpoon-go-to-3)
+  (evil-define-key 'normal 'global (kbd "<leader> 4") 'harpoon-go-to-4)
+  (evil-define-key 'normal 'global (kbd "<leader> c a") 'lsp-execute-code-action))
+
+(use-package evil-collection
+  :ensure t
+  :after evil
+  :config
+  (evil-collection-init))
 
 (use-package evil-commentary
   :ensure t
@@ -267,37 +329,18 @@
   :ensure t
   :defer t)
 
+(use-package company
+  :ensure t
+  :hook
+  (after-init . global-company-mode))
+
+
 (use-package lsp-haskell
   :ensure t
   :defer t
   :config
   (setq lsp-haskell-server-path "~/.ghcup/bin/haskell-language-server-wrapper"))
 
-(use-package company
-  :ensure t
-  :hook
-  (after-init . global-company-mode))
-
-(use-package lsp-mode
-  :ensure t
-  :defer t
-  :hook ((c-mode . lsp)
-         (python-mode . lsp)
-         (js-mode . lsp)
-         (lisp-mode . lsp)
-         (haskell-mode . lsp)
-         (bash-ts-mode . lsp))
-  :config
-  (lsp-completion-enable t)
-  (lsp-completion-enable-additional-text-edit t)
-  (lsp-enable-snippet nil)
-  (lsp-completion-show-kind t)
-  (lsp-completion-provider :none)
-  :commands lsp)
-
-(use-package lsp-ui
-  :ensure t
-  :defer t)
 
 (use-package projectile
   :ensure t
@@ -318,62 +361,5 @@
 (use-package harpoon
   :ensure t)
 
-(use-package general
-  :ensure t
-  :config
-  (general-create-definer n/leader
-  :prefix "SPC")
-
-  (general-def 'normal "C-b" 'dired-jump)
-
-  (general-def 'normal "C-u" 'n/evil-scroll-up)
-  (general-def 'normal "C-d" 'n/evil-scroll-down)
-
-  (general-def 'normal "[ e" 'flymake-goto-prev-error)
-  (general-def 'normal "] e" 'flymake-goto-next-error)
-  (general-def 'normal "C-p" 'projectile-find-file)
-
-  (general-def 'normal 'emacs-lisp-mode-map
-    "SPC i" 'eval-buffer)
-
-  (general-def 'normal 'dired-mode-map
-    "RET" 'dired-find-file
-    "j" 'dired-next-line
-    "k" 'dired-previous-line
-    "D" 'dired-do-delete
-    "O" 'dired-do-open
-    "-" 'dired-up-directory
-    "q" 'quit-window
-    "=" 'dired-diff
-    "mm" 'dired-mark
-    "mu" 'dired-unmark
-    "mU" 'dired-unmark-all-marks
-    "!" 'dired-do-shell-command
-    "R" 'dired-do-rename
-    "C" 'dired-do-copy
-    "Z" 'dired-do-compress-to)
-
-  (general-create-definer n/lsp
-	:prefix "SPC c")
-
-  (n/leader 'normal
-    "/" 'swiper
-    "r n" 'lsp-rename
-    "p p" 'projectile-switch-project
-    "p f" 'project-find-file
-    "SPC" 'counsel-switch-buffer
-    "g s" 'magit
-    "g l" 'magit-log
-    "m" 'harpoon-add-file
-    "h l" 'harpoon-quick-menu-hydra
-    "h d" 'harpoon-delete-item
-    "v t" 'vterm
-    "1" 'harpoon-go-to-1
-    "2" 'harpoon-go-to-2
-    "3" 'harpoon-go-to-3
-    "4" 'harpoon-go-to-4
-    "c a" 'lsp-execute-code-action))
-
-(benchmark-init/deactivate)
 (provide 'init)
 ;;; init.el ends here
