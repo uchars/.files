@@ -62,6 +62,99 @@
   (global-hl-line-mode 1)
   (modify-coding-system-alist 'file "" 'utf-8))
 
+(defun n/transparency-enable ()
+  "Enables Editor transparency."
+  (interactive)
+  (set-frame-parameter (selected-frame) 'alpha '(80 . 80))
+  (add-to-list 'default-frame-alist '(alpha . (80 . 80))))
+
+(defun n/transparency-disable ()
+  "Disable Editor transparency."
+  (interactive)
+  (set-frame-parameter (selected-frame) 'alpha '(100 . 100))
+  (add-to-list 'default-frame-alist '(alpha . (100 . 100))))
+
+(defun n/search-ddg ()
+  "Search DuckDuckGo for a query."
+  (interactive)
+  (let ((q (read-string "Query: ")))
+    (eww (concat "https://ddg.gg/?q=" q))))
+
+(defun n/search-google ()
+  "Search Google for a query."
+  (interactive)
+  (let ((q (read-string "Query: ")))
+    (eww (concat "https://google.com/search?q=" q))))
+
+(defun n/search-wiki ()
+  "Search wikipedia for a query."
+  (interactive)
+  (let ((q (read-string "Query: ")))
+    (eww (concat "https://wikipedia.org/wiki/" q))))
+
+(defun n/search-cpp ()
+  "Search wikipedia for a query."
+  (interactive)
+  (let ((q (read-string "Query: ")))
+    (eww (concat "https://ddg.gg/?sites=cppreference.com&q=" q))))
+
+(use-package evil
+  :ensure t
+  :hook
+  (after-init . evil-mode)
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  :config
+  (evil-set-undo-system 'undo-tree)
+  (setq evil-leader/in-all-states t)
+  (setq evil-want-fine-undo t)
+
+  (evil-set-leader 'normal (kbd "SPC"))
+  (evil-set-leader 'visual (kbd "SPC"))
+
+  (evil-define-key 'normal 'global (kbd "C-u") 'n/evil-scroll-up)
+  (evil-define-key 'normal 'global (kbd "C-d") 'n/evil-scroll-down)
+  (evil-define-key 'normal 'global (kbd "<leader> c c") 'compile)
+  (evil-define-key 'normal 'global (kbd "<leader> r c") 'recompile)
+  (evil-define-key 'normal emacs-lisp-mode-map (kbd "<leader> i") 'eval-buffer)
+  (evil-define-key 'normal emacs-lisp-mode-map (kbd "<leader> i") 'eval-buffer)
+
+  (setq evil-emacs-state-modes '())
+  (evil-set-initial-state 'eshell-mode 'normal)
+  (evil-set-initial-state 'term-mode 'normal)
+  (evil-set-initial-state 'image-mode 'motion)
+  (evil-set-initial-state 'special-mode 'motion)
+  (evil-set-initial-state 'pdf-view-mode 'motion)
+  (evil-set-initial-state 'org-agenda-mode 'motion)
+  (evil-set-initial-state 'compilation-mode 'motion)
+  (evil-set-initial-state 'grep-mode 'motion)
+  (evil-set-initial-state 'Info-mode 'motion)
+  (evil-set-initial-state 'magit--mode 'motion)
+  (evil-set-initial-state 'magit-status-mode 'motion)
+  (evil-set-initial-state 'magit-diff-mode 'motion)
+  (evil-set-initial-state 'magit-stashes-mode 'motion)
+  (evil-set-initial-state 'epa-key-list-mode 'motion)
+  (evil-set-initial-state 'fuel-debug-mode 'motion))
+
+(use-package evil-commentary
+  :ensure t
+  :defer t
+  :init
+  (evil-commentary-mode))
+
+(use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
+
+(use-package evil-matchit
+  :ensure t
+  :after evil
+  :config
+  (global-evil-matchit-mode 1))
+
 (use-package dired
   :ensure nil
   :custom
@@ -73,12 +166,33 @@
    '(("\\.\\(png\\|jpe?g\\|tiff\\)" "feh" "xdg-open" "open") ;; Open image files with `feh' or the default viewer.
      ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open" "open") ;; Open audio and video files with `mpv'.
      (".*" "open" "xdg-open")))
-  (dired-kill-when-opening-new-dired-buffer t))
+  (dired-kill-when-opening-new-dired-buffer t)
+  :config
+  (setq dired-mode-map (make-keymap))
+  (evil-set-initial-state 'dired-mode 'motion)
+  (evil-define-key 'normal 'global (kbd "C-b") 'dired-jump)
+  (evil-define-key 'motion dired-mode-map
+    (kbd "RET") 'dired-find-file
+    (kbd "j") 'dired-next-line
+    (kbd "k") 'dired-previous-line
+    (kbd "D") 'dired-do-delete
+    (kbd "O") 'dired-do-open
+    (kbd "-") 'dired-up-directory
+    (kbd "q") 'quit-window
+    (kbd "=") 'dired-diff
+    (kbd "mm") 'dired-mark
+    (kbd "mu") 'dired-unmark
+    (kbd "mU") 'dired-unmark-all-marks
+    (kbd "!") 'dired-do-shell-command
+    (kbd "R") 'dired-do-rename
+    (kbd "C") 'dired-do-copy
+    (kbd "Z") 'dired-do-compress-to))
 
-(use-package exec-path-from-shell
-  :ensure t
-  :init
-  (exec-path-from-shell-initialize))
+(unless (eq system-type 'windows-nt)
+  (use-package exec-path-from-shell
+    :ensure t
+    :init
+    (exec-path-from-shell-initialize)))
 
 (use-package eldoc
   :ensure nil
@@ -89,6 +203,9 @@
   :ensure nil
   :defer t
   :hook (prog-mode . flymake-mode)
+  :config
+  (evil-define-key 'normal 'global (kbd "[ e") 'flymake-goto-prev-error)
+  (evil-define-key 'normal 'global (kbd "] e") 'flymake-goto-next-error)
   :custom
   (flymake-margin-indicators-string
    '((error "!»" compilation-error) (warning "»" compilation-warning)
@@ -103,7 +220,9 @@
   :config
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t)
-  :init
+  (evil-define-key 'normal 'global (kbd "<leader> /") 'swiper)
+  (define-key ivy-minibuffer-map (kbd "TAB") 'ivy-next-line)
+  (define-key ivy-minibuffer-map (kbd "<backtab>") 'ivy-previous-line)
   (ivy-mode))
 
 (use-package vertico
@@ -118,6 +237,8 @@
 (use-package counsel
   :ensure t
   :after ivy
+  :config
+  (evil-define-key 'normal 'global (kbd "<leader> SPC") 'counsel-switch-buffer)
   :bind (("M-x" . counsel-M-x)
          ("C-h f" . counsel-describe-function)))
 
@@ -134,10 +255,6 @@
   :ensure t
   :hook
   (after-init . marginalia-mode))
-
-(use-package embark
-  :ensure t
-  :defer t)
 
 (use-package treesit-auto
   :ensure t
@@ -159,7 +276,22 @@
 
 (use-package magit
   :ensure t
-  :defer t)
+  :config
+  (setq magit-mode-map (make-keymap)
+        magit-status-mode-map (make-keymap)
+        magit-diff-mode-map (make-keymap)
+       magit-stashes-mode-map (make-keymap))
+  (evil-define-key 'motion 'global (kbd "<leader> g s") 'magit)
+  (evil-define-key 'motion 'global (kbd "<leader> g l") 'magit-log)
+  (evil-define-key 'motion magit-mode-map
+    (kbd "RET") #'magit-visit-thing
+    (kbd "TAB") #'magit-section-cycle
+    (kbd "=") #'magit-section-cycle
+    (kbd "R") #'magit-refresh
+    (kbd "s") #'magit-stage
+    (kbd "u") #'magit-unstage
+    (kbd "x") #'magit-discard
+  ))
 
 (use-package xclip
   :ensure t
@@ -178,97 +310,26 @@
 (use-package flycheck
   :ensure t)
 
+;; Tramp hosts
+(setq n/tramp-hosts
+      '(("sterz_n@juniper" . "/ssh:sterz_n@10.42.42.10:")))
+
+(defun n/choose-tramp()
+  "Choose tramp host to connect to."
+  (interactive)
+  (let ((host (completing-read "Choose a host: " n/tramp-hosts)))
+	(find-file (concat (cdr (assoc host n/tramp-hosts)) "/"))))
+
 (use-package lsp-mode
   :ensure t
   :config
   (setq lsp-idle-delay 0.500)
   (setq lsp-log-io nil)
+  (evil-define-key 'normal prog-mode-map
+    (kbd "<leader> r n") 'lsp-rename
+    (kbd "<leader> c a") 'lsp-execute-code-action)
   :hook ((c++-mode . lsp-deferred))
   :commands (lsp lsp-deferred))
-
-(use-package evil
-  :ensure t
-  :defer t
-  :hook
-  (after-init . evil-mode)
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  :config
-  (evil-set-undo-system 'undo-tree)
-  (setq evil-leader/in-all-states t)
-  (setq evil-want-fine-undo t)
-
-  (evil-set-leader 'normal (kbd "SPC"))
-  (evil-set-leader 'visual (kbd "SPC"))
-
-  (evil-define-key 'normal 'global (kbd "C-b") 'dired-jump)
-  (evil-define-key 'normal 'global (kbd "C-u") 'n/evil-scroll-up)
-  (evil-define-key 'normal 'global (kbd "C-d") 'n/evil-scroll-down)
-  (evil-define-key 'normal 'global (kbd "[ e") 'flymake-goto-prev-error)
-  (evil-define-key 'normal 'global (kbd "] e") 'flymake-goto-next-error)
-  (evil-define-key 'normal 'global (kbd "C-p") 'projectile-find-file)
-
-  (evil-define-key 'normal emacs-lisp-mode-map (kbd "<leader> i") 'eval-buffer)
-
-  (evil-define-key 'normal dired-mode-map (kbd "<leader> RET") 'dired-find-file)
-  (evil-define-key 'normal dired-mode-map (kbd "<leader> j") 'dired-next-line)
-  (evil-define-key 'normal dired-mode-map (kbd "<leader> k") 'dired-previous-line)
-  (evil-define-key 'normal dired-mode-map (kbd "<leader> D") 'dired-do-delete)
-  (evil-define-key 'normal dired-mode-map (kbd "<leader> O") 'dired-do-open)
-  (evil-define-key 'normal dired-mode-map (kbd "<leader> -") 'dired-up-directory)
-  (evil-define-key 'normal dired-mode-map (kbd "<leader> q") 'quit-window)
-  (evil-define-key 'normal dired-mode-map (kbd "<leader> =") 'dired-diff)
-  (evil-define-key 'normal dired-mode-map (kbd "<leader> mm") 'dired-mark)
-  (evil-define-key 'normal dired-mode-map (kbd "<leader> mu") 'dired-unmark)
-  (evil-define-key 'normal dired-mode-map (kbd "<leader> mU") 'dired-unmark-all-marks)
-  (evil-define-key 'normal dired-mode-map (kbd "<leader> !") 'dired-do-shell-command)
-  (evil-define-key 'normal dired-mode-map (kbd "<leader> R") 'dired-do-rename)
-  (evil-define-key 'normal dired-mode-map (kbd "<leader> C") 'dired-do-copy)
-  (evil-define-key 'normal dired-mode-map (kbd "<leader> Z") 'dired-do-compress-to)
-
-  (evil-define-key 'normal 'global (kbd "<leader> /") 'swiper)
-  (evil-define-key 'normal 'global (kbd "<leader> r n") 'lsp-rename)
-  (evil-define-key 'normal 'global (kbd "<leader> p p") 'projectile-switch-project)
-  (evil-define-key 'normal 'global (kbd "<leader> p f") 'project-find-file)
-  (evil-define-key 'normal 'global (kbd "<leader> SPC") 'counsel-switch-buffer)
-  (evil-define-key 'normal 'global (kbd "<leader> g s") 'magit)
-  (evil-define-key 'normal 'global (kbd "<leader> g l") 'magit-log)
-  (evil-define-key 'normal 'global (kbd "<leader> m") 'harpoon-add-file)
-  (evil-define-key 'normal 'global (kbd "<leader> h l") 'harpoon-quick-menu-hydra)
-  (evil-define-key 'normal 'global (kbd "<leader> d 1") 'harpoon-delete-1)
-  (evil-define-key 'normal 'global (kbd "<leader> d 2") 'harpoon-delete-2)
-  (evil-define-key 'normal 'global (kbd "<leader> d 3") 'harpoon-delete-3)
-  (evil-define-key 'normal 'global (kbd "<leader> v t") 'vterm)
-  (evil-define-key 'normal 'global (kbd "<leader> 1") 'harpoon-go-to-1)
-  (evil-define-key 'normal 'global (kbd "<leader> 2") 'harpoon-go-to-2)
-  (evil-define-key 'normal 'global (kbd "<leader> 3") 'harpoon-go-to-3)
-  (evil-define-key 'normal 'global (kbd "<leader> 4") 'harpoon-go-to-4)
-  (evil-define-key 'normal 'global (kbd "<leader> c a") 'lsp-execute-code-action))
-
-(use-package evil-collection
-  :ensure t
-  :after evil
-  :config
-  (evil-collection-init))
-
-(use-package evil-commentary
-  :ensure t
-  :defer t
-  :init
-  (evil-commentary-mode))
-
-(use-package evil-surround
-  :ensure t
-  :config
-  (global-evil-surround-mode 1))
-
-(use-package evil-matchit
-  :ensure t
-  :after evil-collection
-  :config
-  (global-evil-matchit-mode 1))
 
 (use-package undo-tree
   :defer t
@@ -281,6 +342,7 @@
         undo-limit 800000
         undo-strong-limit 12000000)
   :config
+  (evil-define-key 'normal 'global (kbd "<leader> u") 'undo-tree-visualize)
   (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/.cache/undo"))))
 
 (use-package rainbow-delimiters
@@ -325,10 +387,6 @@
   :ensure t
   :defer t)
 
-(use-package embark
-  :ensure t
-  :defer t)
-
 (use-package company
   :ensure t
   :hook
@@ -346,20 +404,53 @@
   :ensure t
   :config
   (setq projectile-project-search-path '("~/.files" "~/projects/" "~/work/"))
+  (evil-define-key 'normal 'global (kbd "C-p") 'projectile-find-file)
+  (evil-define-key 'normal 'global (kbd "<leader> p p") 'projectile-switch-project)
+  (evil-define-key 'normal 'global (kbd "<leader> p f") 'project-find-file)
   :hook
   (after-init . projectile-mode))
 
-(use-package doom-modeline
+(use-package mood-line
   :ensure t
-  :defer t
-  :hook
-  (after-init . doom-modeline-mode))
+  :config
+  (mood-line-mode))
 
 (use-package vterm
-  :ensure t)
+  :ensure t
+  :config
+  (evil-define-key 'normal 'global (kbd "<leader> v t") 'vterm))
 
 (use-package harpoon
-  :ensure t)
+  :ensure t
+  :config
+  (evil-define-key 'normal 'global
+	(kbd "<leader> 1") 'harpoon-go-to-1
+	(kbd "<leader> 2") 'harpoon-go-to-2
+	(kbd "<leader> 3") 'harpoon-go-to-3
+	(kbd "<leader> 4") 'harpoon-go-to-4
+	(kbd "<leader> m") 'harpoon-add-file
+	(kbd "<leader> h l") 'harpoon-quick-menu-hydra
+	(kbd "<leader> d 1") 'harpoon-delete-1
+	(kbd "<leader> d 2") 'harpoon-delete-2
+	(kbd "<leader> d 3") 'harpoon-delete-3))
+
+(use-package pdf-tools
+  :ensure t
+  :mode ("\\.pdf'" . pdf-view-mode)
+  :config
+  (define-key pdf-view-mode-map (kbd "q") nil)
+  (evil-define-key motion pdf-view-mode-map
+    "h" 'scroll-left
+    "l" 'scroll-right
+	"j" 'pdf-view-next-line-or-next-page
+    "k" 'pdf-view-previous-line-or-previous-page
+    "J" 'pdf-view-scroll-up-or-next-page
+    "K" 'pdf-view-scroll-down-or-previous-page
+	"]" 'pdf-view-next-page-command
+    "[" 'pdf-view-previous-page-command
+	"-" 'pdf-view-shrink
+    "+" 'pdf-view-enlarge
+    ))
 
 (provide 'init)
 ;;; init.el ends here

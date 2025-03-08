@@ -66,10 +66,9 @@ require("lazy").setup({
 				tag = "v1.29.0",
 			},
 			{
-				"jay-babu/mason-null-ls.nvim",
-				tag = "v2.6.0",
+				"stevearc/conform.nvim",
+				tag = "v9.0.0",
 			},
-			"jose-elias-alvarez/null-ls.nvim",
 			{
 				"ray-x/lsp_signature.nvim",
 				tag = "v0.3.1",
@@ -91,8 +90,6 @@ require("lazy").setup({
 		"hrsh7th/nvim-cmp",
 		commit = "a110e12",
 		dependencies = {
-			"L3MON4D3/LuaSnip",
-			"saadparwaiz1/cmp_luasnip",
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-path",
 		},

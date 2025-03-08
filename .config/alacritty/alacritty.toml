@@ -3,4 +3,4 @@ size = 16
 normal = { family = "Source Code Pro", style = "Regular" }
 
 [window]
-opacity = 1
+opacity = 0.9
