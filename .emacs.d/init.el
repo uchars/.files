@@ -291,6 +291,10 @@
     (kbd "s") #'magit-stage
     (kbd "u") #'magit-unstage
     (kbd "x") #'magit-discard
+    (kbd "c c") #'magit-commit
+    (kbd "c a") #'magit-commit-amend
+    (kbd "r r") #'magit-rebase
+    (kbd "P") #'magit-push
   ))
 
 (use-package xclip
@@ -311,7 +315,7 @@
   :ensure t)
 
 ;; Tramp hosts
-(setq n/tramp-hosts
+(defvar n/tramp-hosts
       '(("sterz_n@juniper" . "/ssh:sterz_n@10.42.42.10:")))
 
 (defun n/choose-tramp()
