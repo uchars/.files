@@ -1,5 +1,6 @@
 ;;; init.el --- Personal emacs config -*- lexical-binding: t; -*-
-;;; Commentary: Works on my machine (tm)
+;;; Commentary:
+;;; Works on my machine (tm)
 ;;; Author: Nils Sterz
 ;;; Code:
 (setq gc-cons-threshold #x40000000)
