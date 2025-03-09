@@ -1,7 +1,6 @@
 ;;; init.el --- Personal emacs config -*- lexical-binding: t; -*-
-;;; Author: Nils Sterz
-
 ;;; Commentary: Works on my machine (tm)
+;;; Author: Nils Sterz
 ;;; Code:
 (setq gc-cons-threshold #x40000000)
 
@@ -10,7 +9,9 @@
 
 (setq read-process-output-max (* 1024 1024 4))
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                         ("org" . "https://orgmode.org/elpa/")
+                         ("elpa" . "https://elpa.gnu.org/packages/")))
 
 
 (use-package emacs
@@ -35,6 +36,7 @@
   :hook
   (prog-mode . display-line-numbers-mode)
   :config
+  (add-to-list 'load-path "~/.emacs.d/custom")
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
   (load custom-file 'noerror 'nomessage)
   (global-set-key (kbd "<escape>")      'keyboard-escape-quit)
@@ -45,6 +47,16 @@
   (setq global-hl-line-mode nil)
   (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  (setq tramp-default-method "ssh")
+  (setq auto-save-file-name-transforms
+		`((".*" "~/.emacs-saves/" t)))
+  (setq backup-directory-alist `(("." . "~/.saves")))
+  (when (eq window-system 'w32)
+	(setq tramp-default-method "plink")
+	(when (and (not (string-match putty-directory (getenv "PATH")))
+			   (file-directory-p putty-directory))
+	  (setenv "PATH" (concat putty-directory ";" (getenv "PATH")))
+	  (add-to-list 'exec-path putty-directory)))
   :init
   (tool-bar-mode -1)
   (menu-bar-mode -1)
@@ -62,41 +74,7 @@
   (global-hl-line-mode 1)
   (modify-coding-system-alist 'file "" 'utf-8))
 
-(defun n/transparency-enable ()
-  "Enables Editor transparency."
-  (interactive)
-  (set-frame-parameter (selected-frame) 'alpha '(80 . 80))
-  (add-to-list 'default-frame-alist '(alpha . (80 . 80))))
-
-(defun n/transparency-disable ()
-  "Disable Editor transparency."
-  (interactive)
-  (set-frame-parameter (selected-frame) 'alpha '(100 . 100))
-  (add-to-list 'default-frame-alist '(alpha . (100 . 100))))
-
-(defun n/search-ddg ()
-  "Search DuckDuckGo for a query."
-  (interactive)
-  (let ((q (read-string "Query: ")))
-    (eww (concat "https://ddg.gg/?q=" q))))
-
-(defun n/search-google ()
-  "Search Google for a query."
-  (interactive)
-  (let ((q (read-string "Query: ")))
-    (eww (concat "https://google.com/search?q=" q))))
-
-(defun n/search-wiki ()
-  "Search wikipedia for a query."
-  (interactive)
-  (let ((q (read-string "Query: ")))
-    (eww (concat "https://wikipedia.org/wiki/" q))))
-
-(defun n/search-cpp ()
-  "Search wikipedia for a query."
-  (interactive)
-  (let ((q (read-string "Query: ")))
-    (eww (concat "https://ddg.gg/?sites=cppreference.com&q=" q))))
+(require 'nils-functions)
 
 (use-package evil
   :ensure t
@@ -119,7 +97,7 @@
   (evil-define-key 'normal 'global (kbd "<leader> c c") 'compile)
   (evil-define-key 'normal 'global (kbd "<leader> r c") 'recompile)
   (evil-define-key 'normal emacs-lisp-mode-map (kbd "<leader> i") 'eval-buffer)
-  (evil-define-key 'normal emacs-lisp-mode-map (kbd "<leader> i") 'eval-buffer)
+  (evil-define-key 'normal 'global (kbd "<leader> t c") 'n/choose-tramp)
 
   (setq evil-emacs-state-modes '())
   (evil-set-initial-state 'eshell-mode 'normal)
@@ -163,8 +141,8 @@
       ("\\.zip\\'" . "zip %o -r --filesync %i")))
   (dired-listing-switches "-lah --group-directories-first")
   (dired-guess-shell-alist-user
-   '(("\\.\\(png\\|jpe?g\\|tiff\\)" "feh" "xdg-open" "open") ;; Open image files with `feh' or the default viewer.
-     ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open" "open") ;; Open audio and video files with `mpv'.
+   '(("\\.\\(png\\|jpe?g\\|tiff\\)" "feh" "xdg-open" "open")
+     ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open" "open")
      (".*" "open" "xdg-open")))
   (dired-kill-when-opening-new-dired-buffer t)
   :config
@@ -185,6 +163,7 @@
     (kbd "mU") 'dired-unmark-all-marks
     (kbd "!") 'dired-do-shell-command
     (kbd "R") 'dired-do-rename
+    (kbd "%") 'dired-create-empty-file
     (kbd "C") 'dired-do-copy
     (kbd "Z") 'dired-do-compress-to))
 
@@ -221,8 +200,8 @@
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t)
   (evil-define-key 'normal 'global (kbd "<leader> /") 'swiper)
-  (define-key ivy-minibuffer-map (kbd "TAB") 'ivy-next-line)
-  (define-key ivy-minibuffer-map (kbd "<backtab>") 'ivy-previous-line)
+  ;; (define-key ivy-minibuffer-map (kbd "TAB") 'ivy-next-line)
+  ;; (define-key ivy-minibuffer-map (kbd "<backtab>") 'ivy-previous-line)
   (ivy-mode))
 
 (use-package vertico
@@ -239,7 +218,9 @@
   :after ivy
   :config
   (evil-define-key 'normal 'global (kbd "<leader> SPC") 'counsel-switch-buffer)
+  (evil-define-key 'motion 'global (kbd "<leader> SPC") 'counsel-switch-buffer)
   :bind (("M-x" . counsel-M-x)
+		 ("SPC SPC" . counsel-switch-buffer)
          ("C-h f" . counsel-describe-function)))
 
 (use-package orderless
@@ -282,7 +263,7 @@
         magit-diff-mode-map (make-keymap)
        magit-stashes-mode-map (make-keymap))
   (evil-define-key 'motion 'global (kbd "<leader> g s") 'magit)
-  (evil-define-key 'motion 'global (kbd "<leader> g l") 'magit-log)
+  (evil-define-key 'motion 'global (kbd "<leader> g l") 'magit-log-current)
   (evil-define-key 'motion magit-mode-map
     (kbd "RET") #'magit-visit-thing
     (kbd "TAB") #'magit-section-cycle
@@ -296,6 +277,12 @@
     (kbd "r r") #'magit-rebase
     (kbd "P") #'magit-push
   ))
+
+(use-package magit-todos
+  :ensure t
+  :defer t
+  :after magit
+  :config (magit-todos-mode 1))
 
 (use-package xclip
   :ensure t
@@ -313,16 +300,6 @@
 
 (use-package flycheck
   :ensure t)
-
-;; Tramp hosts
-(defvar n/tramp-hosts
-      '(("sterz_n@juniper" . "/ssh:sterz_n@10.42.42.10:")))
-
-(defun n/choose-tramp()
-  "Choose tramp host to connect to."
-  (interactive)
-  (let ((host (completing-read "Choose a host: " n/tramp-hosts)))
-	(find-file (concat (cdr (assoc host n/tramp-hosts)) "/"))))
 
 (use-package lsp-mode
   :ensure t
@@ -378,14 +355,16 @@
   (load-theme 'catppuccin :no-confirm))
 
 (defun n/evil-scroll-up ()
+  "Center page after scroll."
   (interactive)
   (evil-scroll-up nil)
-  (recenter))
+  (evil-scroll-line-to-center nil))
 
 (defun n/evil-scroll-down ()
+  "Center page after scroll."
   (interactive)
   (evil-scroll-down nil)
-  (recenter))
+  (evil-scroll-line-to-center nil))
 
 (use-package haskell-mode
   :ensure t
@@ -396,23 +375,30 @@
   :hook
   (after-init . global-company-mode))
 
-
 (use-package lsp-haskell
   :ensure t
   :defer t
   :config
   (setq lsp-haskell-server-path "~/.ghcup/bin/haskell-language-server-wrapper"))
 
-
 (use-package projectile
   :ensure t
+  :custom ((projectile-completion-system 'ivy))
   :config
   (setq projectile-project-search-path '("~/.files" "~/projects/" "~/work/"))
+  (setq projectile-switch-project-action #'projectile-dired)
   (evil-define-key 'normal 'global (kbd "C-p") 'projectile-find-file)
+  (evil-define-key 'motion 'global (kbd "C-p") 'projectile-find-file)
   (evil-define-key 'normal 'global (kbd "<leader> p p") 'projectile-switch-project)
+  (evil-define-key 'motion 'global (kbd "<leader> p p") 'projectile-switch-project)
   (evil-define-key 'normal 'global (kbd "<leader> p f") 'project-find-file)
+  (evil-define-key 'motion 'global (kbd "<leader> p f") 'project-find-file)
   :hook
   (after-init . projectile-mode))
+
+(use-package ripgrep
+  :ensure t
+  :after projectile)
 
 (use-package mood-line
   :ensure t
@@ -455,6 +441,86 @@
 	"-" 'pdf-view-shrink
     "+" 'pdf-view-enlarge
     ))
+
+(defun nils/org-mode-setup ()
+  (org-indent-mode)
+  (variable-pitch-mode 1)
+  (auto-fill-mode 0)
+  (visual-line-mode 0)
+  (setq evil-auto-indent nil)
+  (diminish org-indent-mode))
+
+(use-package org
+  :ensure t
+  :defer t
+  :hook (org-mode . nils/org-mode-setup)
+  :config
+  (setq org-ellipsis " ▾"
+	org-hide-emphasis-markers t
+	org-src-fontify-natively t
+	org-fontify-quote-and-verse-blocks t
+	org-src-tab-acts-natively t
+	org-edit-src-content-indentation 2
+	org-hide-block-startup nil
+	org-src-preserve-indentation nil
+	org-startup-folded 'content
+	org-cycle-separator-lines 2)
+  (evil-define-key '(normal insert visual) org-mode-map (kbd "C-j") 'org-next-visible-heading)
+  (evil-define-key '(normal insert visual) org-mode-map (kbd "C-k") 'org-previous-visible-heading)
+  (use-package org-superstar
+    :after org
+    :hook (org-mode . org-superstar-mode)
+    :custom
+    (org-superstar-remove-leading-stars t)
+    (org-superstar-headline-bullets-list '("◉" "○" "●" "○" "●" "○" "●")))
+  (set-face-attribute 'org-document-title nil :weight 'bold :height 1.3)
+  (dolist (face '((org-level-1 . 1.2)
+                  (org-level-2 . 1.1)
+                  (org-level-3 . 1.05)
+                  (org-level-4 . 1.0)
+                  (org-level-5 . 1.1)
+                  (org-level-6 . 1.1)
+                  (org-level-7 . 1.1)
+                  (org-level-8 . 1.1)))
+    (set-face-attribute (car face) nil :weight 'medium :height (cdr face)))
+  (require 'org-indent)
+  (use-package evil-org
+    :after org
+    :hook ((org-mode . evil-org-mode)
+	   (org-agenda-mode . evil-org-mode)
+	   (evil-org-mode . (lambda () (evil-org-set-key-theme '(navigation todo insert textobjects additional)))))
+    :config
+    (require 'evil-org-agenda)
+    (evil-org-agenda-set-keys)))
+
+(use-package org-roam
+  :ensure t
+  :init
+  (setq org-roam-v2-ack t)
+  :custom
+  (org-roam-directory "~/Documents/notes")
+  (org-roam-completion-everywhere t)
+  (org-roam-capture-templates
+   '(("d" "default" plain "%?"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
+      :unnarrowed t)
+     ("b" "dienstreise" plain "%?"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: Dienstreise")
+      :unnarrowed t)))
+   :bind (("C-c n l" . org-roam-buffer-toggle)
+	 ("C-c n f" . org-roam-node-find)
+	 ("C-c n i" . org-roam-node-insert))
+  :config
+  (org-roam-setup))
+
+(use-package org-roam-ui
+  :ensure t
+  :after org-roam
+  :config
+  (setq org-roam-ui-sync-theme t
+	org-roam-ui-follow t
+	org-roam-ui-update-on-save t))
+
 
 (provide 'init)
 ;;; init.el ends here
