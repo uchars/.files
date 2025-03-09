@@ -32,3 +32,5 @@ automake
 autoconf
 pandoc
 jq
+plymouth
+plymouth-themes
