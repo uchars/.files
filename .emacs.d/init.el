@@ -14,6 +14,7 @@
                          ("org" . "https://orgmode.org/elpa/")
                          ("elpa" . "https://elpa.gnu.org/packages/")))
 
+(setq use-package-always-ensure t)
 
 (use-package emacs
   :ensure nil
@@ -299,9 +300,6 @@
   :config
   (setq indent-guide-char "│"))
 
-(use-package flycheck
-  :ensure t)
-
 (use-package lsp-mode
   :ensure t
   :config
@@ -310,8 +308,44 @@
   (evil-define-key 'normal prog-mode-map
     (kbd "<leader> r n") 'lsp-rename
     (kbd "<leader> c a") 'lsp-execute-code-action)
-  :hook ((c++-mode . lsp-deferred))
+  :hook ((c++-mode . lsp-deferred) (c-mode . lsp-deferred))
   :commands (lsp lsp-deferred))
+
+(use-package flycheck
+  :ensure t
+  :hook
+  (lsp-mode . flycheck-mode))
+
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-position 'at-point))
+
+(use-package lsp-treemacs
+  :after lsp)
+
+(use-package markdown-mode
+  :ensure t
+  :straight t
+  :mode "\\.md\\'"
+  :config
+  (setq markdown-command "marked")
+  (defun dw/set-markdown-header-font-sizes ()
+    (dolist (face '((markdown-header-face-1 . 2.2)
+                    (markdown-header-face-2 . 1.1)
+                    (markdown-header-face-3 . 1.0)
+                    (markdown-header-face-4 . 1.0)
+                    (markdown-header-face-5 . 1.0)))
+      (set-face-attribute (car face) nil :weight 'normal :height (cdr face))))
+  (defun dw/markdown-mode-hook ()
+    (dw/set-markdown-header-font-sizes))
+  (add-hook 'markdown-mode-hook 'dw/markdown-mode-hook))
+
+(use-package company-box
+  :diminish
+  :hook (company-mode . company-box-mode)
+  :custom
+  (company-box-scrollbar nil))
 
 (use-package undo-tree
   :defer t
@@ -381,6 +415,21 @@
   :defer t
   :config
   (setq lsp-haskell-server-path "~/.ghcup/bin/haskell-language-server-wrapper"))
+
+(use-package rust-mode
+  :ensure t
+  :after lsp-mode
+  :hook
+  (rust-mode . lsp)
+  :mode "\\.rs\\'")
+
+(use-package cargo
+  :ensure t
+  :defer t)
+
+(use-package cmake-mode
+  :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'")
+  :hook (cmake-mode . lsp-deferred))
 
 (use-package projectile
   :ensure t
@@ -522,6 +571,16 @@
 	org-roam-ui-follow t
 	org-roam-ui-update-on-save t))
 
+(use-package lsp-nix
+  "Install 'nil' & 'nixpkgs-fmt'"
+  :ensure lsp-mode
+  :after lsp-mode
+  :custom
+  (lsp-nix-nil-formatter ["nixpkgs-fmt"]))
+
+(use-package nix-mode
+  :hook (nix-mode . lsp-deferred)
+  :mode "\\.nix\\'")
 
 (provide 'init)
 ;;; init.el ends here
