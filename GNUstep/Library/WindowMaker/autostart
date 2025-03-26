@@ -43,4 +43,7 @@ fi
 if ! pgrep "wmamixer" >/dev/null; then
   wmamixer -w &
 fi
-wmsetbg -f ~/GNUstep/Library/WindowMaker/Backgrounds/Joan+of+arc+battle+Patreon.png
+WALLPAPER="~/Nextcloud/Pictures/Wallpapers/joan_of_arc_3440_1440.png"
+if [ -e $WALLPAPER ]; then
+  wmsetbg -f $WALLPAPER
+fi

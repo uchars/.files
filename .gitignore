@@ -12,3 +12,4 @@ GNUstep/Library/WindowMaker/Screenshots/
 .local/share/*
 fonts.*
 WMState*
+.local/bin/nvim

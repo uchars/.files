@@ -30,7 +30,7 @@ require("nvim-treesitter.configs").setup({
     "vim",
     "make",
     "sql",
-    "latex",
+    -- "latex",
     "xml",
   }),
   auto_install = false,

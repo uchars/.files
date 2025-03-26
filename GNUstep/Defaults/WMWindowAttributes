@@ -11,19 +11,22 @@
   steam_app_1364780.steam_app_1364780 = {
     Icon = steam_app_1364780.steam_app_1364780.xpm;
   };
+  thunar.Thunar = {
+    Icon = Drawer.xpm;
+  };
+  Thunar.Thunar = {
+    Icon = Bookshelf.xpm;
+  };
+  groupLeader.WPrefs = {
+    Icon = groupLeader.WPrefs.xpm;
+  };
   "transmission-qt.transmission" = {
     Icon = "transmission-qt.transmission.xpm";
   };
   fileViewer.FileViewer = {
     AlwaysUserIcon = No;
   };
-  Thunar.Thunar = {
-    Icon = Bookshelf.xpm;
-  };
   Logo.WMDock = {
     Icon = Penguin.xpm;
-  };
-  groupLeader.WPrefs = {
-    Icon = groupLeader.WPrefs.xpm;
   };
 }

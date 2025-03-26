@@ -1,5 +1,20 @@
 # .files
 
+## Mint
+
+```
+xargs sudo apt install -y < deb-requirements.txt
+```
+
+`sudo update-alternatives --config default.plymouth`
+
+`sudo update-initramfs -u`
+
+`sudo nvim /etc/default/grub`
+
+`GRUB_GFXMODE=3440x1440`
+`sudo update-grub`
+
 ## Install
 
 Install Arch Linux using archinstall or manual.

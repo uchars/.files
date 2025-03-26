@@ -35,22 +35,11 @@
       },
       {
         Forced = No;
-        Name = default.default;
-        DropCommand = "steam %d";
-        BuggyApplication = No;
-        AutoLaunch = No;
-        Position = "0,3";
-        Lock = No;
-        PasteCommand = "steam %s";
-        Command = steam;
-      },
-      {
-        Forced = No;
         Name = thunar.Thunar;
         DropCommand = "thunar %d";
         BuggyApplication = No;
         AutoLaunch = No;
-        Position = "0,4";
+        Position = "0,3";
         Lock = No;
         PasteCommand = "thunar %s";
         Command = thunar;
@@ -61,7 +50,7 @@
         DropCommand = "transmission-qt %d";
         BuggyApplication = No;
         AutoLaunch = No;
-        Position = "0,5";
+        Position = "0,4";
         Lock = No;
         PasteCommand = "transmission-qt %s";
         Command = "transmission-qt";
@@ -103,22 +92,11 @@
       },
       {
         Forced = No;
-        Name = default.default;
-        DropCommand = "steam %d";
-        BuggyApplication = No;
-        AutoLaunch = No;
-        Position = "0,3";
-        Lock = No;
-        PasteCommand = "steam %s";
-        Command = steam;
-      },
-      {
-        Forced = No;
         Name = thunar.Thunar;
         DropCommand = "thunar %d";
         BuggyApplication = No;
         AutoLaunch = No;
-        Position = "0,4";
+        Position = "0,3";
         Lock = No;
         PasteCommand = "thunar %s";
         Command = thunar;
@@ -129,7 +107,7 @@
         DropCommand = "transmission-qt %d";
         BuggyApplication = No;
         AutoLaunch = No;
-        Position = "0,5";
+        Position = "0,4";
         Lock = No;
         PasteCommand = "transmission-qt %s";
         Command = "transmission-qt";

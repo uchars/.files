@@ -18,14 +18,14 @@ fi
 
 if [ -x "$(command -v xinput)" ]; then
 	device_id=$(xinput list | grep "Touchpad" | awk '{print $6}' | cut -d '=' -f 2)
-	xinput set-prop $device_id "libinput Natural Scrolling Enabled" 1
+	#xinput set-prop $device_id "libinput Natural Scrolling Enabled" 1
 fi
 
-if ! [[ $(/bin/pgrep -f "dwmstatus.sh") ]]; then
-	if [ -x "$(command -v dwmstatus.sh)" ]; then
-		dwmstatus.sh &
-	fi
-fi
+#if ! [[ $(/bin/pgrep -f "dwmstatus.sh") ]]; then
+#	if [ -x "$(command -v dwmstatus.sh)" ]; then
+#		dwmstatus.sh &
+#	fi
+#fi
 
 command -v setxkbmap >/dev/null 2>&1 && setxkbmap us
 

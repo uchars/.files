@@ -1,6 +1,6 @@
 [font]
 size = 16
-normal = { family = "Source Code Pro", style = "Regular" }
+normal = { family = "SauceCodePro Nerd Font", style = "Regular" }
 
 [window]
 opacity = 0.8
