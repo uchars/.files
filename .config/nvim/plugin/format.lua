@@ -13,13 +13,6 @@ fmt.setup({
 	},
 })
 
-vim.api.nvim_create_autocmd("BufWritePre", {
-	pattern = "*",
-	callback = function(args)
-		fmt.format({ bufnr = args.buf })
-	end,
-})
-
-vim.api.nvim_create_user_command("DisableLspFormatting", function()
-	vim.api.nvim_clear_autocmds({ buffer = 0 })
-end, { nargs = 0 })
+vim.keymap.set("n", "<leader>fm", function()
+	fmt.format()
+end)

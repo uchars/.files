@@ -22,13 +22,10 @@ require("lazy").setup({
 		tag = "stable",
 	},
 	"tpope/vim-surround",
-
-	-- Git related plugins
 	"tpope/vim-fugitive",
-
 	"nvim-tree/nvim-web-devicons",
-	-- Detect tabstop and shiftwidth automatically
 	"tpope/vim-sleuth",
+
 	{ "xiyaowong/transparent.nvim", commit = "fd35a46" },
 
 	{
@@ -52,6 +49,7 @@ require("lazy").setup({
 		end,
 		tag = "2.19.4",
 	},
+
 	{
 		"neovim/nvim-lspconfig",
 		tag = "v0.1.8",
@@ -110,14 +108,12 @@ require("lazy").setup({
 		branch = "0.1.x",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
-			"ThePrimeagen/git-worktree.nvim",
 		},
 	},
 
 	{
 		-- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
-		tag = "v0.9.2",
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter-context",
 			-- { dir = "$HOME/src/nvim-treesitter-context" },

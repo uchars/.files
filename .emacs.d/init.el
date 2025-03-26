@@ -59,6 +59,12 @@
 			   (file-directory-p putty-directory))
 	  (setenv "PATH" (concat putty-directory ";" (getenv "PATH")))
 	  (add-to-list 'exec-path putty-directory)))
+  (ignore-errors
+    (require 'ansi-color)
+    (defun my-colorize-compilation-buffer ()
+      (when (eq major-mode 'compilation-mode)
+        (ansi-color-apply-on-region compilation-filter-start (point-max))))
+    (add-hook 'compilation-filter-hook 'my-colorize-compilation-buffer))
   :init
   (tool-bar-mode -1)
   (menu-bar-mode -1)
@@ -100,6 +106,10 @@
   (evil-define-key 'normal 'global (kbd "<leader> r c") 'recompile)
   (evil-define-key 'normal emacs-lisp-mode-map (kbd "<leader> i") 'eval-buffer)
   (evil-define-key 'normal 'global (kbd "<leader> t c") 'n/choose-tramp)
+  (evil-define-key 'normal 'global (kbd "C-b") 'dired-jump)
+  (evil-define-key 'normal 'motion (kbd "C-b") 'dired-jump)
+  (evil-define-key 'normal 'global (kbd "<leader> SPC") 'counsel-switch-buffer)
+  (evil-define-key 'motion 'global (kbd "<leader> SPC") 'counsel-switch-buffer)
 
   (setq evil-emacs-state-modes '())
   (evil-set-initial-state 'eshell-mode 'normal)
@@ -111,6 +121,7 @@
   (evil-set-initial-state 'compilation-mode 'motion)
   (evil-set-initial-state 'grep-mode 'motion)
   (evil-set-initial-state 'Info-mode 'motion)
+  (evil-set-initial-state 'dired-mode 'motion)
   (evil-set-initial-state 'magit--mode 'motion)
   (evil-set-initial-state 'magit-status-mode 'motion)
   (evil-set-initial-state 'magit-diff-mode 'motion)
@@ -150,7 +161,6 @@
   :config
   (setq dired-mode-map (make-keymap))
   (evil-set-initial-state 'dired-mode 'motion)
-  (evil-define-key 'normal 'global (kbd "C-b") 'dired-jump)
   (evil-define-key 'motion dired-mode-map
     (kbd "RET") 'dired-find-file
     (kbd "j") 'dired-next-line
@@ -219,8 +229,6 @@
   :ensure t
   :after ivy
   :config
-  (evil-define-key 'normal 'global (kbd "<leader> SPC") 'counsel-switch-buffer)
-  (evil-define-key 'motion 'global (kbd "<leader> SPC") 'counsel-switch-buffer)
   :bind (("M-x" . counsel-M-x)
 		 ("SPC SPC" . counsel-switch-buffer)
          ("C-h f" . counsel-describe-function)))
@@ -307,6 +315,7 @@
   (setq lsp-log-io nil)
   (evil-define-key 'normal prog-mode-map
     (kbd "<leader> r n") 'lsp-rename
+    (kbd "K") 'lsp-ui-doc-glance
     (kbd "<leader> c a") 'lsp-execute-code-action)
   :hook ((c++-mode . lsp-deferred) (c-mode . lsp-deferred))
   :commands (lsp lsp-deferred))
@@ -493,6 +502,7 @@
     ))
 
 (defun nils/org-mode-setup ()
+  "Setting up org mode."
   (org-indent-mode)
   (variable-pitch-mode 1)
   (auto-fill-mode 0)

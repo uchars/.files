@@ -5,3 +5,6 @@ LICENSE
 .local/share
 fonts*
 kde_profiles
+.emacs.d/.lsp-session-v1
+.emacs.d/custom-vars.el
+.emacs.d/eln-cache/

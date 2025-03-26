@@ -21,3 +21,7 @@ fi
 if [ -d "$HOME/.ghcup/bin" ]; then
 	PATH="$HOME/.ghcup/bin:$PATH"
 fi
+
+if [ -d "$HOME/Downloads/zig-linux-x86_64-0.14.0" ]; then
+	PATH="$HOME/Downloads/zig-linux-x86_64-0.14.0:$PATH"
+fi

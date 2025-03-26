@@ -23,10 +23,10 @@ _aur_install() {
 
 
 install_requirements() {
-	basics=("man" "base-devel" "git" "tmux" "neovim"  "npm" "unzip" "python" "htop")
+	basics=("man" "base-devel" "git" "tmux" "neovim"  "npm" "unzip" "python" "htop" "wget" "man-db" "man-pages")
 	fonts=("ttf-font-awesome" "xorg-font-util" "xorg-fonts-misc" "noto-fonts" "xorg-fonts-misc" "noto-fonts-cjk" "ttf-noto-nerd")
-	desktop=("firefox" "chromium" "xorg-server" "alacritty" "xorg-xinit" "pavucontrol" "discord" "bitwarden" "xclip" "networkmanager" "scrot" "feh" "nextcloud-client" "zathura" "yubikey-manager" "zathura-pdf-mupdf" "gvfs" "vlc" "mpv" "picom" "cups" "cups-pdf" "gimp" "obs-studio" "thunderbird" "solaar")
-	utils=("bluez" "bluez-utils" "fzf" "ripgrep" "screenfetch" "tealdeer" "zip" "libfido2" "python-virtualenv" "mtpfs" "android-udev" "plymouth" "cantarell-fonts")
+	desktop=("firefox" "chromium" "xorg-server" "alacritty" "xorg-xinit" "pavucontrol" "discord" "bitwarden" "xclip" "networkmanager" "scrot" "feh" "nextcloud-client" "zathura" "yubikey-manager" "zathura-pdf-mupdf" "gvfs" "vlc" "mpv" "picom" "cups" "cups-pdf" "gimp" "obs-studio" "thunderbird" "solaar" "audacity")
+	utils=("bluez" "bluez-utils" "fzf" "ripgrep" "screenfetch" "tealdeer" "zip" "libfido2" "python-virtualenv" "mtpfs" "android-udev" "plymouth" "cantarell-fonts" "yt-dlp" "luarocks" "lua51")
 
 	_pacman_install ${basics[@]}
 	_pacman_install ${fonts[@]}
@@ -55,12 +55,12 @@ enable_services() {
 }
 
 nvidia() {
-	drivers=("nvidia-open" "nvidia-utils")
+	drivers=("nvidia-open" "nvidia-utils nvidia-settings")
 	_pacman_install ${drivers[@]}
 }
 
 aur_programs() {
-	packages=("spotify" "ghcup-hs-bin" "yubico-authenticator-bin")
+	packages=("spotify" "ghcup-hs-bin" "yubico-authenticator-bin" "brave-bin")
 	_aur_install ${packages[@]}
 }
 
@@ -75,7 +75,7 @@ aur_setup() {
 }
 
 kde_setup() {
-	packages=("plasma" "system-config-printer" "okular" "gwenview" "krita" "kmag" "filelight" "kcolorchooser" "partitionmanager" "dolphin" "ark" "isoimagewriter" "kcalc" "sddm")
+	packages=("plasma" "system-config-printer" "okular" "gwenview" "krita" "kmag" "filelight" "kcolorchooser" "partitionmanager" "dolphin" "ark" "isoimagewriter" "kcalc" "sddm" "qt6-virtualkeyboard" "kdenlive" "kdegraphics-thumbnailers")
 	_pacman_install ${packages[@]}
 	sudo systemctl enable sddm --now --force
 	_blueman

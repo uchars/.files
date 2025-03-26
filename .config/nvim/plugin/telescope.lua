@@ -27,8 +27,6 @@ require("telescope").setup({
   },
 })
 
-require("telescope").load_extension("git_worktree")
-
 vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles)
 vim.keymap.set("n", "<leader><space>", require("telescope.builtin").buffers)
 vim.keymap.set("n", "<leader>/", function()
@@ -56,5 +54,3 @@ vim.keymap.set("n", "<leader>sr", require("telescope.builtin").resume)
 vim.keymap.set("n", "<leader>fh", require("telescope.builtin").help_tags)
 vim.keymap.set("n", "<leader>gb", require("telescope.builtin").git_branches)
 vim.keymap.set("n", "<leader>gc", require("telescope.builtin").git_commits)
-vim.keymap.set("n", "<leader>gw", require("telescope").extensions.git_worktree.git_worktrees)
-vim.keymap.set("n", "<leader>gW", require("telescope").extensions.git_worktree.create_git_worktree)
