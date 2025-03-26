@@ -55,3 +55,4 @@ wmstickynotes
 wmcalclock
 wmmixer
 libasound2-dev
+alacritty
