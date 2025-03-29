@@ -28,9 +28,9 @@ fi
 if ! pgrep "mpris-proxy" >/dev/null; then
   mpris-proxy &
 fi
-if ! pgrep "wmudmount" >/dev/null; then
-  wmudmount --no-default-config --blink-full-filesystems --exclude-system-volumes &
-fi
+# if ! pgrep "wmudmount" >/dev/null; then
+#   # wmudmount --no-default-config --blink-full-filesystems --exclude-system-volumes &
+# fi
 if ! pgrep "wmCalClock" >/dev/null; then
   wmCalClock -24 &
 fi
@@ -43,7 +43,7 @@ fi
 if ! pgrep "wmamixer" >/dev/null; then
   wmamixer -w &
 fi
-WALLPAPER="~/Nextcloud/Pictures/Wallpapers/joan_of_arc_3440_1440.png"
+WALLPAPER="$HOME/Nextcloud/Pictures/Wallpapers/joan_of_arc_3440_1440.png"
 FALLBACK_WP="$(pwd)/Backgrounds/firewatch.png"
 if [ -e $WALLPAPER ]; then
   wmsetbg -f $WALLPAPER

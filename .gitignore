@@ -13,3 +13,15 @@ GNUstep/Library/WindowMaker/Screenshots/
 fonts.*
 WMState*
 .local/bin/nvim
+.emacs.d/.cache
+.emacs.d/.lsp*
+.emacs.d/workspace
+.emacs.d/tree*
+.emacs.d/tramp*
+.emacs.d/custom*
+.emacs.d/eclipse*
+.emacs.d/places*
+.local/bin/yt-dlp
+history
+*.db
+*cache*

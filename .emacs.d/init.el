@@ -18,6 +18,7 @@
 
 (use-package emacs
   :ensure nil
+
   :custom
   (column-number-mode t)
   (auto-save-default nil)
@@ -84,70 +85,9 @@
 
 (require 'nils-functions)
 
-(use-package evil
-  :ensure t
-  :hook
-  (after-init . evil-mode)
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  :config
-  (evil-set-undo-system 'undo-tree)
-  (setq evil-leader/in-all-states t)
-  (setq evil-want-fine-undo t)
-
-  (evil-set-leader 'normal (kbd "SPC"))
-  (evil-set-leader 'visual (kbd "SPC"))
-
-  (evil-define-key 'normal 'global (kbd "C-u") 'n/evil-scroll-up)
-  (evil-define-key 'normal 'global (kbd "C-d") 'n/evil-scroll-down)
-  (evil-define-key 'normal 'global (kbd "<leader> c c") 'compile)
-  (evil-define-key 'normal 'global (kbd "<leader> r c") 'recompile)
-  (evil-define-key 'normal emacs-lisp-mode-map (kbd "<leader> i") 'eval-buffer)
-  (evil-define-key 'normal 'global (kbd "<leader> t c") 'n/choose-tramp)
-  (evil-define-key 'normal 'global (kbd "C-b") 'dired-jump)
-  (evil-define-key 'normal 'motion (kbd "C-b") 'dired-jump)
-  (evil-define-key 'normal 'global (kbd "<leader> SPC") 'counsel-switch-buffer)
-  (evil-define-key 'motion 'global (kbd "<leader> SPC") 'counsel-switch-buffer)
-
-  (setq evil-emacs-state-modes '())
-  (evil-set-initial-state 'eshell-mode 'normal)
-  (evil-set-initial-state 'term-mode 'normal)
-  (evil-set-initial-state 'image-mode 'motion)
-  (evil-set-initial-state 'special-mode 'motion)
-  (evil-set-initial-state 'pdf-view-mode 'motion)
-  (evil-set-initial-state 'org-agenda-mode 'motion)
-  (evil-set-initial-state 'compilation-mode 'motion)
-  (evil-set-initial-state 'grep-mode 'motion)
-  (evil-set-initial-state 'Info-mode 'motion)
-  (evil-set-initial-state 'dired-mode 'motion)
-  (evil-set-initial-state 'magit--mode 'motion)
-  (evil-set-initial-state 'magit-status-mode 'motion)
-  (evil-set-initial-state 'magit-diff-mode 'motion)
-  (evil-set-initial-state 'magit-stashes-mode 'motion)
-  (evil-set-initial-state 'epa-key-list-mode 'motion)
-  (evil-set-initial-state 'fuel-debug-mode 'motion))
-
-(use-package evil-commentary
-  :ensure t
-  :defer t
-  :init
-  (evil-commentary-mode))
-
-(use-package evil-surround
-  :ensure t
-  :config
-  (global-evil-surround-mode 1))
-
-(use-package evil-matchit
-  :ensure t
-  :after evil
-  :config
-  (global-evil-matchit-mode 1))
-
 (use-package dired
   :ensure nil
+  :after evil
   :custom
   (setq dired-compress-files-alist
     '(("\\.tar\\.gz\\'" . "tar -c %i | gzip -c9 > %o")
@@ -175,9 +115,11 @@
     (kbd "mU") 'dired-unmark-all-marks
     (kbd "!") 'dired-do-shell-command
     (kbd "R") 'dired-do-rename
+    (kbd "S") 'dired-do-search
     (kbd "%") 'dired-create-empty-file
     (kbd "C") 'dired-do-copy
     (kbd "Z") 'dired-do-compress-to))
+
 
 (unless (eq system-type 'windows-nt)
   (use-package exec-path-from-shell
@@ -189,18 +131,6 @@
   :ensure nil
   :init
   (global-eldoc-mode))
-
-(use-package flymake
-  :ensure nil
-  :defer t
-  :hook (prog-mode . flymake-mode)
-  :config
-  (evil-define-key 'normal 'global (kbd "[ e") 'flymake-goto-prev-error)
-  (evil-define-key 'normal 'global (kbd "] e") 'flymake-goto-next-error)
-  :custom
-  (flymake-margin-indicators-string
-   '((error "!»" compilation-error) (warning "»" compilation-warning)
-	 (note "»" compilation-info))))
 
 (use-package org
   :ensure nil
@@ -267,6 +197,7 @@
 
 (use-package magit
   :ensure t
+  :after evil
   :config
   (setq magit-mode-map (make-keymap)
         magit-status-mode-map (make-keymap)
@@ -274,7 +205,7 @@
        magit-stashes-mode-map (make-keymap))
   (evil-define-key 'motion 'global (kbd "<leader> g s") 'magit)
   (evil-define-key 'motion 'global (kbd "<leader> g l") 'magit-log-current)
-  (evil-define-key 'motion magit-mode-map
+  (evil-define-key 'normal magit-mode-map
     (kbd "RET") #'magit-visit-thing
     (kbd "TAB") #'magit-section-cycle
     (kbd "=") #'magit-section-cycle
@@ -300,14 +231,6 @@
   :hook
   (after-init . xclip-mode))
 
-(use-package indent-guide
-  :defer t
-  :ensure t
-  :hook
-  (prog-mode . indent-guide-mode)
-  :config
-  (setq indent-guide-char "│"))
-
 (use-package lsp-mode
   :ensure t
   :config
@@ -316,14 +239,16 @@
   (evil-define-key 'normal prog-mode-map
     (kbd "<leader> r n") 'lsp-rename
     (kbd "K") 'lsp-ui-doc-glance
+    (kbd "<leader> f m") 'lsp-format-buffer
+    (kbd "<leader> f r") 'lsp-format-region
+    (kbd "<leader> g r") 'lsp-find-reference
     (kbd "<leader> c a") 'lsp-execute-code-action)
   :hook ((c++-mode . lsp-deferred) (c-mode . lsp-deferred))
   :commands (lsp lsp-deferred))
 
-(use-package flycheck
+(use-package lsp-java
   :ensure t
-  :hook
-  (lsp-mode . flycheck-mode))
+  :hook (java-ts-mode . lsp))
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
@@ -332,6 +257,13 @@
 
 (use-package lsp-treemacs
   :after lsp)
+
+(use-package flycheck
+  :ensure t
+  :hook (lsp-mode . flycheck-mode)
+  :config
+  (evil-define-key 'normal 'global (kbd "[ e") 'flycheck-previous-error)
+  (evil-define-key 'normal 'global (kbd "] e") 'flycheck-next-error))
 
 (use-package markdown-mode
   :ensure t
@@ -464,11 +396,6 @@
   :config
   (mood-line-mode))
 
-(use-package vterm
-  :ensure t
-  :config
-  (evil-define-key 'normal 'global (kbd "<leader> v t") 'vterm))
-
 (use-package harpoon
   :ensure t
   :config
@@ -591,6 +518,74 @@
 (use-package nix-mode
   :hook (nix-mode . lsp-deferred)
   :mode "\\.nix\\'")
+
+(use-package evil
+  :ensure t
+  :hook
+  (after-init . evil-mode)
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  :config
+  (evil-set-undo-system 'undo-tree)
+  (setq evil-leader/in-all-states t)
+  (setq evil-want-fine-undo t)
+
+  (evil-set-leader 'normal (kbd "SPC"))
+  (evil-set-leader 'visual (kbd "SPC"))
+
+  (setq evil-emacs-state-modes '())
+  (evil-set-initial-state 'term-mode 'insert)
+  (evil-set-initial-state 'vterm-mode 'insert)
+  (evil-set-initial-state 'image-mode 'motion)
+  (evil-set-initial-state 'special-mode 'motion)
+  (evil-set-initial-state 'pdf-view-mode 'normal)
+  (evil-set-initial-state 'org-agenda-mode 'motion)
+  (evil-set-initial-state 'compilation-mode 'normal)
+  (evil-set-initial-state 'grep-mode 'motion)
+  (evil-set-initial-state 'Info-mode 'motion)
+  (evil-set-initial-state 'dired-mode 'motion)
+  (evil-set-initial-state 'magit-status-mode 'normal)
+  (evil-set-initial-state 'magit-diff-mode 'normal)
+  (evil-set-initial-state 'magit-stashes-mode 'normal)
+  (evil-set-initial-state 'epa-key-list-mode 'motion)
+  (evil-set-initial-state 'fuel-debug-mode 'motion)
+
+  (evil-define-key 'normal 'global (kbd "<leader> s s") 'n/search-ddg)
+  (evil-define-key 'normal 'global (kbd "C-u") 'n/evil-scroll-up)
+  (evil-define-key 'normal 'global (kbd "C-d") 'n/evil-scroll-down)
+  (evil-define-key 'normal 'global (kbd "<leader> c c") 'compile)
+  (evil-define-key 'normal 'global (kbd "<leader> r c") 'recompile)
+  (evil-define-key 'normal emacs-lisp-mode-map (kbd "<leader> i") 'eval-buffer)
+  (evil-define-key 'normal 'global (kbd "<leader> t c") 'n/choose-tramp)
+  (evil-define-key 'normal 'global (kbd "C-b") 'dired-jump)
+  (evil-define-key 'normal 'motion (kbd "C-b") 'dired-jump)
+  (evil-define-key 'normal 'global (kbd "<leader> SPC") 'counsel-switch-buffer)
+  (evil-define-key 'motion 'global (kbd "<leader> SPC") 'counsel-switch-buffer))
+
+(use-package evil-commentary
+  :ensure t
+  :defer t
+  :init
+  (evil-commentary-mode))
+
+(use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
+
+(use-package evil-matchit
+  :ensure t
+  :after evil
+  :config
+  (global-evil-matchit-mode 1))
+
+(use-package vterm
+  :ensure t
+  :config
+  (evil-define-key 'normal vterm-mode-map (kbd "p") 'vterm-yank)
+  (evil-define-key 'normal 'global (kbd "<leader> v t") 'vterm))
 
 (provide 'init)
 ;;; init.el ends here
