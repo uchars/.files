@@ -60,3 +60,5 @@ libtool-bin
 scons
 clangd
 ffmpeg
+chromium
+spotify-client

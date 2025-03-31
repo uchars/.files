@@ -18,7 +18,6 @@
 
 (use-package emacs
   :ensure nil
-
   :custom
   (column-number-mode t)
   (auto-save-default nil)
@@ -40,6 +39,7 @@
   (prog-mode . display-line-numbers-mode)
   :config
   (add-to-list 'load-path "~/.emacs.d/custom")
+  (add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
   (load custom-file 'noerror 'nomessage)
   (global-set-key (kbd "<escape>")      'keyboard-escape-quit)
@@ -127,15 +127,6 @@
     :init
     (exec-path-from-shell-initialize)))
 
-(use-package eldoc
-  :ensure nil
-  :init
-  (global-eldoc-mode))
-
-(use-package org
-  :ensure nil
-  :defer t)
-
 (use-package ivy
   :ensure t
   :config
@@ -161,6 +152,7 @@
   :config
   :bind (("M-x" . counsel-M-x)
 		 ("SPC SPC" . counsel-switch-buffer)
+		 ("C-h k" . counsel-descbinds)
          ("C-h f" . counsel-describe-function)))
 
 (use-package orderless
@@ -241,9 +233,10 @@
     (kbd "K") 'lsp-ui-doc-glance
     (kbd "<leader> f m") 'lsp-format-buffer
     (kbd "<leader> f r") 'lsp-format-region
-    (kbd "<leader> g r") 'lsp-find-reference
+    (kbd "<leader> g r") 'lsp-find-references
     (kbd "<leader> c a") 'lsp-execute-code-action)
-  :hook ((c++-mode . lsp-deferred) (c-mode . lsp-deferred))
+  (add-hook 'c-ts-mode-hook 'lsp)
+  (add-hook 'c++-ts-mode-hook 'lsp)
   :commands (lsp lsp-deferred))
 
 (use-package lsp-java
@@ -268,7 +261,7 @@
 (use-package markdown-mode
   :ensure t
   :straight t
-  :mode "\\.md\\'"
+  :mode ("\\.md" . markdown-view-mode)
   :config
   (setq markdown-command "marked")
   (defun dw/set-markdown-header-font-sizes ()
@@ -362,14 +355,14 @@
   :after lsp-mode
   :hook
   (rust-mode . lsp)
-  :mode "\\.rs\\'")
+  :mode "\\.rs")
 
 (use-package cargo
   :ensure t
   :defer t)
 
 (use-package cmake-mode
-  :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'")
+  :mode ("CMakeLists\\.txt" "\\.cmake")
   :hook (cmake-mode . lsp-deferred))
 
 (use-package projectile
@@ -381,6 +374,7 @@
   (evil-define-key 'normal 'global (kbd "C-p") 'projectile-find-file)
   (evil-define-key 'motion 'global (kbd "C-p") 'projectile-find-file)
   (evil-define-key 'normal 'global (kbd "<leader> p p") 'projectile-switch-project)
+  (evil-define-key 'normal 'global (kbd "<leader> p s") 'project-shell)
   (evil-define-key 'motion 'global (kbd "<leader> p p") 'projectile-switch-project)
   (evil-define-key 'normal 'global (kbd "<leader> p f") 'project-find-file)
   (evil-define-key 'motion 'global (kbd "<leader> p f") 'project-find-file)
@@ -410,37 +404,21 @@
 	(kbd "<leader> d 2") 'harpoon-delete-2
 	(kbd "<leader> d 3") 'harpoon-delete-3))
 
-(use-package pdf-tools
-  :ensure t
-  :mode ("\\.pdf'" . pdf-view-mode)
-  :config
-  (define-key pdf-view-mode-map (kbd "q") nil)
-  (evil-define-key motion pdf-view-mode-map
-    "h" 'scroll-left
-    "l" 'scroll-right
-	"j" 'pdf-view-next-line-or-next-page
-    "k" 'pdf-view-previous-line-or-previous-page
-    "J" 'pdf-view-scroll-up-or-next-page
-    "K" 'pdf-view-scroll-down-or-previous-page
-	"]" 'pdf-view-next-page-command
-    "[" 'pdf-view-previous-page-command
-	"-" 'pdf-view-shrink
-    "+" 'pdf-view-enlarge
-    ))
-
 (defun nils/org-mode-setup ()
   "Setting up org mode."
   (org-indent-mode)
   (variable-pitch-mode 1)
   (auto-fill-mode 0)
   (visual-line-mode 0)
-  (setq evil-auto-indent nil)
-  (diminish org-indent-mode))
+  (setq evil-auto-indent nil))
 
 (use-package org
   :ensure t
   :defer t
   :hook (org-mode . nils/org-mode-setup)
+  :custom
+  (org-directory "~/Documents")
+  (org-default-notes-file "~/Documents/tmp.org")
   :config
   (setq org-ellipsis " ▾"
 	org-hide-emphasis-markers t
@@ -454,12 +432,6 @@
 	org-cycle-separator-lines 2)
   (evil-define-key '(normal insert visual) org-mode-map (kbd "C-j") 'org-next-visible-heading)
   (evil-define-key '(normal insert visual) org-mode-map (kbd "C-k") 'org-previous-visible-heading)
-  (use-package org-superstar
-    :after org
-    :hook (org-mode . org-superstar-mode)
-    :custom
-    (org-superstar-remove-leading-stars t)
-    (org-superstar-headline-bullets-list '("◉" "○" "●" "○" "●" "○" "●")))
   (set-face-attribute 'org-document-title nil :weight 'bold :height 1.3)
   (dolist (face '((org-level-1 . 1.2)
                   (org-level-2 . 1.1)
@@ -470,15 +442,25 @@
                   (org-level-7 . 1.1)
                   (org-level-8 . 1.1)))
     (set-face-attribute (car face) nil :weight 'medium :height (cdr face)))
-  (require 'org-indent)
-  (use-package evil-org
-    :after org
-    :hook ((org-mode . evil-org-mode)
-	   (org-agenda-mode . evil-org-mode)
-	   (evil-org-mode . (lambda () (evil-org-set-key-theme '(navigation todo insert textobjects additional)))))
-    :config
-    (require 'evil-org-agenda)
-    (evil-org-agenda-set-keys)))
+  (require 'org-indent))
+
+(use-package evil-org
+  :ensure t
+  :after org
+  :hook ((org-mode . evil-org-mode)
+		 (org-agenda-mode . evil-org-mode)
+		 (evil-org-mode . (lambda () (evil-org-set-key-theme '(navigation todo insert textobjects additional)))))
+  :config
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
+
+(use-package org-superstar
+  :ensure t
+  :after org
+  :hook (org-mode . org-superstar-mode)
+  :custom
+  (org-superstar-remove-leading-stars t)
+  (org-superstar-headline-bullets-list '("◉" "○" "●" "○" "●" "○" "●")))
 
 (use-package org-roam
   :ensure t
@@ -517,7 +499,7 @@
 
 (use-package nix-mode
   :hook (nix-mode . lsp-deferred)
-  :mode "\\.nix\\'")
+  :mode "\\.nix")
 
 (use-package evil
   :ensure t
@@ -540,6 +522,7 @@
   (evil-set-initial-state 'vterm-mode 'insert)
   (evil-set-initial-state 'image-mode 'motion)
   (evil-set-initial-state 'special-mode 'motion)
+  (evil-set-initial-state 'eww-mode 'motion)
   (evil-set-initial-state 'pdf-view-mode 'normal)
   (evil-set-initial-state 'org-agenda-mode 'motion)
   (evil-set-initial-state 'compilation-mode 'normal)
@@ -552,14 +535,20 @@
   (evil-set-initial-state 'epa-key-list-mode 'motion)
   (evil-set-initial-state 'fuel-debug-mode 'motion)
 
-  (evil-define-key 'normal 'global (kbd "<leader> s s") 'n/search-ddg)
+  (evil-define-key 'normal 'global (kbd "<leader> s s") 'hydra-search/body)
   (evil-define-key 'normal 'global (kbd "C-u") 'n/evil-scroll-up)
   (evil-define-key 'normal 'global (kbd "C-d") 'n/evil-scroll-down)
-  (evil-define-key 'normal 'global (kbd "<leader> c c") 'compile)
+  (evil-define-key 'normal 'global (kbd "<leader> c c") 'project-compile)
+  (evil-define-key 'normal 'global (kbd "<leader> c e") 'compile-goto-error)
   (evil-define-key 'normal 'global (kbd "<leader> r c") 'recompile)
+  (evil-define-key 'normal 'global (kbd "<leader> !") 'shell-command)
+  (evil-define-key 'motion eww-mode-map (kbd "C-o") 'eww-back-url)
+  (evil-define-key 'motion eww-mode-map (kbd "C-i") 'eww-forward-url)
   (evil-define-key 'normal emacs-lisp-mode-map (kbd "<leader> i") 'eval-buffer)
   (evil-define-key 'normal 'global (kbd "<leader> t c") 'n/choose-tramp)
   (evil-define-key 'normal 'global (kbd "C-b") 'dired-jump)
+  (evil-define-key 'normal 'global (kbd "<leader> z z") 'hydra-zoom/body)
+  (evil-define-key 'normal 'global (kbd "<leader> o") 'hydra-org/body)
   (evil-define-key 'normal 'motion (kbd "C-b") 'dired-jump)
   (evil-define-key 'normal 'global (kbd "<leader> SPC") 'counsel-switch-buffer)
   (evil-define-key 'motion 'global (kbd "<leader> SPC") 'counsel-switch-buffer))
@@ -581,11 +570,60 @@
   :config
   (global-evil-matchit-mode 1))
 
+(use-package hydra
+  :ensure t
+  :config
+  (defhydra hydra-org ()
+    "org"
+    ("i" org-roam-node-insert "insert")
+    ("f" org-roam-node-find "find/create")
+    ("c" org-roam-node-capture "capture")
+    ("v" org-roam-node-visit "visit")
+    ("u" org-roam-ui-open "open ui"))
+  (defhydra hydra-search ()
+    "search"
+    ("d" n/search-ddg "duckduckgo")
+    ("c" n/search-cpp "c++ wiki")
+    ("s" n/search-stackoverflow "stackoverflow")
+    ("w" n/search-wiki "wikipedia"))
+  (defhydra hydra-zoom ()
+    "zoom"
+    ("+" text-scale-increase "in")
+    ("0" text-scale-set "reset")
+    ("-" text-scale-decrease "out")))
+
 (use-package vterm
   :ensure t
   :config
   (evil-define-key 'normal vterm-mode-map (kbd "p") 'vterm-yank)
   (evil-define-key 'normal 'global (kbd "<leader> v t") 'vterm))
+
+(use-package pdf-tools
+  :ensure t
+  :mode ("\\.pdf" . pdf-view-mode)
+  :after evil
+  :hook
+  (pdf-view-mode . (lambda () (internal-show-cursor nil nil)))
+  (pdf-view-themed-minor-mode . (lambda () (internal-show-cursor nil nil)))
+  :config
+  (define-key pdf-view-mode-map (kbd "q") nil)
+
+  (evil-define-key 'normal pdf-view-mode-map
+    "h" 'scroll-left
+    "l" 'scroll-right
+    "j" 'pdf-view-scroll-up-or-next-page
+    "k" 'pdf-view-scroll-down-or-previous-page
+    "r" (lambda() (interactive) (pdf-view-rotate 90))
+    "R" (lambda() (interactive) (pdf-view-rotate -90))
+    (kbd "C-d") 'pdf-view-next-page
+    (kbd "C-u") 'pdf-view-previous-page
+    (kbd "f p") 'pdf-view-fit-page-to-window
+    (kbd "f w") 'pdf-view-fit-width-to-window
+    (kbd "t d") 'pdf-view-themed-minor-mode
+    "]" 'pdf-view-next-page-command
+    "[" 'pdf-view-previous-page-command
+    "-" 'pdf-view-shrink
+    "+" 'pdf-view-enlarge))
 
 (provide 'init)
 ;;; init.el ends here

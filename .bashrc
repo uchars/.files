@@ -25,4 +25,8 @@ if [ -e "$HOME/.cargo/env" ]; then
   . "$HOME/.cargo/env"
 fi
 
+xset -dpms
+setterm -powerdown 0
+xset s off
+
 [ -f "$HOME/.ghcup/env" ] && . "$HOME/.ghcup/env"
