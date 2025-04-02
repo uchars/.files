@@ -62,3 +62,5 @@ clangd
 ffmpeg
 chromium
 spotify-client
+dunst
+gnome-icon-theme
