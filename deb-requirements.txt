@@ -40,7 +40,7 @@ wmaker
 cmake
 tmux
 tree-sitter-cli
-steam
+steam-installer
 rofi
 thunar
 transmission-qt
@@ -64,3 +64,4 @@ chromium
 spotify-client
 dunst
 gnome-icon-theme
+wmacpi
