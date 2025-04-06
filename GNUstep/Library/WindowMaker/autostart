@@ -43,6 +43,9 @@ fi
 if ! pgrep "wmamixer" >/dev/null; then
   wmamixer -w &
 fi
+if ! pgrep "wmacpi" >/dev/null; then
+  wmacpi &
+fi
 WALLPAPER="$HOME/Nextcloud/Pictures/Wallpapers/joan_of_arc_3440_1440.png"
 FALLBACK_WP="$(pwd)/Backgrounds/firewatch.png"
 if [ -e $WALLPAPER ]; then

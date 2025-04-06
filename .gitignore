@@ -25,3 +25,5 @@ WMState*
 history
 *.db
 *cache*
+.local/bin/jdt/
+.local/bin/pylsp

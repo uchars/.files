@@ -70,3 +70,4 @@ default-jdk
 maven
 arandr
 virtualbox
+wmacpi

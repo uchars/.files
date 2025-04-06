@@ -10,55 +10,9 @@
         Position = "0,0";
         Lock = No;
         Command = "-";
-      },
-      {
-        Forced = No;
-        Name = firefox.Firefox;
-        DropCommand = "firefox %d";
-        BuggyApplication = No;
-        AutoLaunch = No;
-        Position = "0,2";
-        Lock = No;
-        PasteCommand = "firefox %s";
-        Command = firefox;
-      },
-      {
-        Forced = No;
-        Name = groupLeader.WPrefs;
-        DropCommand = "WPrefs %d";
-        BuggyApplication = No;
-        AutoLaunch = No;
-        Position = "0,1";
-        Lock = No;
-        PasteCommand = "WPrefs %s";
-        Command = WPrefs;
-      },
-      {
-        Forced = No;
-        Name = thunar.Thunar;
-        DropCommand = "thunar %d";
-        BuggyApplication = No;
-        AutoLaunch = No;
-        Position = "0,3";
-        Lock = No;
-        PasteCommand = "thunar %s";
-        Command = thunar;
-      },
-      {
-        Forced = No;
-        Name = "transmission-qt.transmission";
-        DropCommand = "transmission-qt %d";
-        BuggyApplication = No;
-        AutoLaunch = No;
-        Position = "0,4";
-        Lock = No;
-        PasteCommand = "transmission-qt %s";
-        Command = "transmission-qt";
       }
     );
-    Lowered = Yes;
-    Position = "0,0";
-    Applications1440 = (
+    Applications1080 = (
       {
         Forced = No;
         Name = Logo.WMDock;
@@ -67,59 +21,17 @@
         Position = "0,0";
         Lock = No;
         Command = "-";
-      },
-      {
-        Forced = No;
-        Name = firefox.Firefox;
-        DropCommand = "firefox %d";
-        BuggyApplication = No;
-        AutoLaunch = No;
-        Position = "0,2";
-        Lock = No;
-        PasteCommand = "firefox %s";
-        Command = firefox;
-      },
-      {
-        Forced = No;
-        Name = groupLeader.WPrefs;
-        DropCommand = "WPrefs %d";
-        BuggyApplication = No;
-        AutoLaunch = No;
-        Position = "0,1";
-        Lock = No;
-        PasteCommand = "WPrefs %s";
-        Command = WPrefs;
-      },
-      {
-        Forced = No;
-        Name = thunar.Thunar;
-        DropCommand = "thunar %d";
-        BuggyApplication = No;
-        AutoLaunch = No;
-        Position = "0,3";
-        Lock = No;
-        PasteCommand = "thunar %s";
-        Command = thunar;
-      },
-      {
-        Forced = No;
-        Name = "transmission-qt.transmission";
-        DropCommand = "transmission-qt %d";
-        BuggyApplication = No;
-        AutoLaunch = No;
-        Position = "0,4";
-        Lock = No;
-        PasteCommand = "transmission-qt %s";
-        Command = "transmission-qt";
       }
     );
+    Lowered = Yes;
+    Position = "1840,0";
   };
   Clip = {
     Forced = No;
     Name = Logo.WMClip;
     BuggyApplication = No;
     AutoLaunch = No;
-    Position = "3360,0";
+    Position = "0,0";
     Lock = No;
     Command = "-";
   };
@@ -146,39 +58,6 @@
         Lowered = Yes;
       };
       Name = "Workspace 2";
-    },
-    {
-      Clip = {
-        AutoRaiseLower = No;
-        AutoCollapse = No;
-        Applications = ();
-        Collapsed = No;
-        AutoAttractIcons = No;
-        Lowered = Yes;
-      };
-      Name = "Workspace 3";
-    },
-    {
-      Clip = {
-        AutoRaiseLower = No;
-        AutoCollapse = No;
-        Applications = ();
-        Collapsed = No;
-        AutoAttractIcons = No;
-        Lowered = Yes;
-      };
-      Name = "Workspace 4";
-    },
-    {
-      Clip = {
-        AutoRaiseLower = No;
-        AutoCollapse = No;
-        Applications = ();
-        Collapsed = No;
-        AutoAttractIcons = No;
-        Lowered = Yes;
-      };
-      Name = "Workspace 5";
     }
   );
 }
