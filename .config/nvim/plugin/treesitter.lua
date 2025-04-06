@@ -25,6 +25,7 @@ require("nvim-treesitter.configs").setup({
     "rust",
     "tsx",
     "javascript",
+    "java",
     "typescript",
     "vimdoc",
     "vim",

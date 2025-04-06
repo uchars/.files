@@ -10,6 +10,7 @@ fmt.setup({
 		cpp = { "clang-format" },
 		rust = { "rustfmt" },
 		go = { "gofmt" },
+		python = { "autopep8" },
 	},
 })
 

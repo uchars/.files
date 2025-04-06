@@ -32,6 +32,7 @@ end
 
 if unzip_installed or is_windows then
 	servers.clangd = {}
+	servers.jdtls = {}
 end
 
 if cargo_installed then

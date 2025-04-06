@@ -46,10 +46,16 @@
   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font"  :height 140)
   (setq scroll-margin 8)
   (setq scroll-conservatively 100)
+  (setq compilation-window-height 10)
   (setq use-short-answers t)
   (setq global-hl-line-mode nil)
+  (load-theme 'modus-vivendi :no-confirm)
+  (fset #'jsonrpc--log-event #'ignore)
   (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  (setq tramp-default-method "ssh")
+  (setq tramp-verbose 1)
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
   (setq tramp-default-method "ssh")
   (setq auto-save-file-name-transforms
 		`((".*" "~/.emacs-saves/" t)))
@@ -133,8 +139,8 @@
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t)
   (evil-define-key 'normal 'global (kbd "<leader> /") 'swiper)
-  ;; (define-key ivy-minibuffer-map (kbd "TAB") 'ivy-next-line)
-  ;; (define-key ivy-minibuffer-map (kbd "<backtab>") 'ivy-previous-line)
+  (evil-define-key 'normal ivy-mode-map (kbd "C-j") 'ivy-next-line)
+  (evil-define-key 'normal ivy-mode-map (kbd "C-k") 'ivy-previous-line)
   (ivy-mode))
 
 (use-package vertico
@@ -223,40 +229,12 @@
   :hook
   (after-init . xclip-mode))
 
-(use-package lsp-mode
-  :ensure t
-  :config
-  (setq lsp-idle-delay 0.500)
-  (setq lsp-log-io nil)
-  (evil-define-key 'normal prog-mode-map
-    (kbd "<leader> r n") 'lsp-rename
-    (kbd "K") 'lsp-ui-doc-glance
-    (kbd "<leader> f m") 'lsp-format-buffer
-    (kbd "<leader> f r") 'lsp-format-region
-    (kbd "<leader> g r") 'lsp-find-references
-    (kbd "<leader> c a") 'lsp-execute-code-action)
-  (add-hook 'c-ts-mode-hook 'lsp)
-  (add-hook 'c++-ts-mode-hook 'lsp)
-  :commands (lsp lsp-deferred))
-
-(use-package lsp-java
-  :ensure t
-  :hook (java-ts-mode . lsp))
-
-(use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode)
-  :custom
-  (lsp-ui-doc-position 'at-point))
-
-(use-package lsp-treemacs
-  :after lsp)
-
 (use-package flycheck
   :ensure t
-  :hook (lsp-mode . flycheck-mode)
   :config
-  (evil-define-key 'normal 'global (kbd "[ e") 'flycheck-previous-error)
-  (evil-define-key 'normal 'global (kbd "] e") 'flycheck-next-error))
+  (add-hook 'eglot-managed-mode-hook 'flycheck-mode)
+  (evil-define-key 'normal prog-mode-map (kbd "[ e") 'flycheck-previous-error)
+  (evil-define-key 'normal prog-mode-map (kbd "] e") 'flycheck-next-error))
 
 (use-package markdown-mode
   :ensure t
@@ -295,6 +273,23 @@
   (evil-define-key 'normal 'global (kbd "<leader> u") 'undo-tree-visualize)
   (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/.cache/undo"))))
 
+(use-package eglot
+  :ensure t
+  :hook (prog-mode . eglot-ensure)
+  :config
+  (evil-define-key 'normal eglot-mode-map (kbd "g r") 'xref-find-references)
+  (evil-define-key 'normal eglot-mode-map (kbd "g d") 'xref-find-definitions)
+  (evil-define-key 'normal eglot-mode-map (kbd "<leader> c a") 'eglot-code-actions)
+  (evil-define-key 'normal eglot-mode-map (kbd "<leader> r n") 'eglot-rename)
+  (evil-define-key 'normal eglot-mode-map (kbd "<leader> f m") 'eglot-format-buffer)
+  (setq eglot-autoshutdown t)
+  (setq eglot-send-changes-idle-time 0.1)
+  (setq eglot-ignored-server-capabilities '(:documentHighlightProvider))
+  (setq eglot-connect-timeout 10)
+  (setq eglot-sync-connect 1)
+  (setq eglot-events-buffer-size 0)
+  (add-to-list 'eglot-server-programs '(python-ts-mode . ("pylsp"))))
+
 (use-package rainbow-delimiters
   :ensure t
   :defer t
@@ -317,11 +312,6 @@
   :config
   (nerd-icons-completion-mode)
   (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
-
-(use-package catppuccin-theme
-  :ensure t
-  :config
-  (load-theme 'catppuccin :no-confirm))
 
 (defun n/evil-scroll-up ()
   "Center page after scroll."
@@ -350,20 +340,12 @@
   :config
   (setq lsp-haskell-server-path "~/.ghcup/bin/haskell-language-server-wrapper"))
 
-(use-package rust-mode
-  :ensure t
-  :after lsp-mode
-  :hook
-  (rust-mode . lsp)
-  :mode "\\.rs")
-
 (use-package cargo
   :ensure t
   :defer t)
 
 (use-package cmake-mode
-  :mode ("CMakeLists\\.txt" "\\.cmake")
-  :hook (cmake-mode . lsp-deferred))
+  :mode ("CMakeLists\\.txt" "\\.cmake"))
 
 (use-package projectile
   :ensure t
@@ -492,15 +474,7 @@
 	org-roam-ui-follow t
 	org-roam-ui-update-on-save t))
 
-(use-package lsp-nix
-  "Install 'nil' & 'nixpkgs-fmt'"
-  :ensure lsp-mode
-  :after lsp-mode
-  :custom
-  (lsp-nix-nil-formatter ["nixpkgs-fmt"]))
-
 (use-package nix-mode
-  :hook (nix-mode . lsp-deferred)
   :mode "\\.nix")
 
 (use-package evil
@@ -544,6 +518,7 @@
   (evil-define-key 'normal 'global (kbd "<leader> c e") 'compile-goto-error)
   (evil-define-key 'normal 'global (kbd "<leader> r c") 'recompile)
   (evil-define-key 'normal 'global (kbd "<leader> !") 'shell-command)
+  (evil-define-key 'normal xref--xref-buffer-mode-map (kbd "CR") 'xref-goto-xref)
   (evil-define-key 'motion eww-mode-map (kbd "C-o") 'eww-back-url)
   (evil-define-key 'motion eww-mode-map (kbd "C-i") 'eww-forward-url)
   (evil-define-key 'normal emacs-lisp-mode-map (kbd "<leader> i") 'eval-buffer)

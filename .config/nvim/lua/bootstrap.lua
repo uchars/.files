@@ -71,10 +71,6 @@ require("lazy").setup({
 				"ray-x/lsp_signature.nvim",
 				tag = "v0.3.1",
 			},
-			{
-				"j-hui/fidget.nvim",
-				tag = "legacy",
-			},
 			"folke/neodev.nvim",
 			{
 				"folke/trouble.nvim",

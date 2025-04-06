@@ -1,7 +1,5 @@
-local ok_fg, fidget = pcall(require, "fidget")
 local ok_lspconf, _ = pcall(require, "lspconfig")
 local ok_telescope, _ = pcall(require, "telescope")
-local ok_signature, _ = pcall(require, "lsp_signature")
 local ok_trouble, trouble = pcall(require, "trouble")
 local ok_neodev, neodev = pcall(require, "neodev")
 if not ok_lspconf and not ok_telescope then
@@ -12,20 +10,10 @@ if ok_neodev then
   neodev.setup()
 end
 
+
 local on_attach = function(_, bufnr)
-  local nmap = function(keys, func, desc)
-    if desc then
-      desc = "LSP: " .. desc
-    end
-    vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
-    if ok_signature then
-      require("lsp_signature").on_attach({
-        hint_prefix = " ",
-        toggle_key = "<C-k>",
-        floating_window = false,
-        hint_enable = false,
-      }, bufnr)
-    end
+  local nmap = function(keys, func)
+    vim.keymap.set("n", keys, func, { buffer = bufnr })
   end
 
   nmap("<leader>rn", vim.lsp.buf.rename)
@@ -36,13 +24,13 @@ local on_attach = function(_, bufnr)
   nmap("<leader>D", vim.lsp.buf.type_definition)
   nmap("<leader>ds", require("telescope.builtin").lsp_document_symbols)
   nmap("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols)
-
   nmap("K", vim.lsp.buf.hover)
 
   -- Lesser used LSP functionality
-  nmap("gD", vim.lsp.buf.declaration)
-  nmap("[e", vim.diagnostic.goto_prev)
-  nmap("]e", vim.diagnostic.goto_next)
+  nmap("gD", function() vim.lsp.buf.declaration() end)
+  nmap("[e", function() vim.diagnostic.goto_prev() end)
+  nmap("]e", function() vim.diagnostic.goto_next() end)
+
   nmap("[E", function()
     vim.diagnostic.goto_prev({
       severity = vim.diagnostic.severity.ERROR,
@@ -55,11 +43,12 @@ local on_attach = function(_, bufnr)
       float = false,
     })
   end)
-  nmap("[d", vim.diagnostic.goto_prev)
-  nmap("]d", vim.diagnostic.goto_next)
-  nmap("<leader>e", vim.diagnostic.open_float)
-  nmap("<leader>vd", vim.diagnostic.open_float)
-  nmap("<leader>q", vim.diagnostic.setloclist)
+
+  nmap("[d", function() vim.lsp.diagnostic.goto_prev() end)
+  nmap("]d", function() vim.lsp.diagnostic.goto_next() end)
+  nmap("<leader>e", function() vim.diagnostic.open_float() end)
+  nmap("<leader>vd", function() vim.diagnostic.open_float() end)
+  nmap("<leader>q", function() vim.diagnostic.setloclist() end)
 
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
@@ -99,6 +88,11 @@ else
 end
 
 require("lspconfig").pylsp.setup({
+  capabilities = capabilities,
+  on_attach = on_attach,
+})
+
+require("lspconfig").jdtls.setup({
   capabilities = capabilities,
   on_attach = on_attach,
 })
@@ -181,13 +175,6 @@ require("lspconfig").zls.setup({
   capabilities = capabilities,
   on_attach = on_attach,
 })
-
-if ok_fg then
-  fidget.setup({
-    window = { blend = 0 },
-    text = { spinner = "earth" },
-  })
-end
 
 if ok_trouble then
   trouble.setup({})
