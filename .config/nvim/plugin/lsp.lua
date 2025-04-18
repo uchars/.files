@@ -2,6 +2,7 @@ local ok_lspconf, _ = pcall(require, "lspconfig")
 local ok_telescope, _ = pcall(require, "telescope")
 local ok_trouble, trouble = pcall(require, "trouble")
 local ok_neodev, neodev = pcall(require, "neodev")
+local is_nixos = vim.fn.executable("nixos-rebuild")
 if not ok_lspconf and not ok_telescope then
   return
 end
@@ -126,10 +127,12 @@ require("lspconfig").lua_ls.setup({
   },
 })
 
-require("lspconfig").nil_ls.setup({
-  capabilities = capabilities,
-  on_attach = on_attach,
-})
+if is_nixos then
+  require("lspconfig").nil_ls.setup({
+    capabilities = capabilities,
+    on_attach = on_attach,
+  })
+end
 
 require("lspconfig").marksman.setup({
   capabilities = capabilities,

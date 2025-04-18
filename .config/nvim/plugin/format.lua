@@ -11,6 +11,8 @@ fmt.setup({
 		rust = { "rustfmt" },
 		go = { "gofmt" },
 		python = { "autopep8" },
+		markdown = { "prettierd" },
+		java = { "google-java-format" },
 	},
 })
 

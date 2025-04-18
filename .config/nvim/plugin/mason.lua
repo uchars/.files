@@ -1,6 +1,7 @@
 local ok, _ = pcall(require, "mason")
 local ok_lsp, mason_lsp = pcall(require, "mason-lspconfig")
-if not ok and not ok_lsp then
+local is_nixos = vim.fn.executable("nixos-rebuild")
+if not ok and not ok_lsp or is_nixos then
 	return
 end
 
