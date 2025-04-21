@@ -1,4 +1,0 @@
-dropdown_menu = { shadow = false; };
-popup_menu    = { shadow = false; };
-utility       = { shadow = false; };
-

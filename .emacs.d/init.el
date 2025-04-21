@@ -16,6 +16,57 @@
 
 (setq use-package-always-ensure t)
 
+(defvar n/tramp-hosts
+      '(("sterz_n@juniper" . "/ssh:sterz_n@10.42.42.10:")))
+
+(defun n/choose-tramp()
+  "Choose tramp host to connect to."
+  (interactive)
+  (let ((host (completing-read "Choose a host: " n/tramp-hosts)))
+	(find-file (concat (cdr (assoc host n/tramp-hosts)) "/"))))
+
+(defun n/transparency-enable ()
+  "Enables Editor transparency."
+  (interactive)
+  (set-frame-parameter (selected-frame) 'alpha '(80 . 80))
+  (add-to-list 'default-frame-alist '(alpha . (80 . 80))))
+
+(defun n/transparency-disable ()
+  "Disable Editor transparency."
+  (interactive)
+  (set-frame-parameter (selected-frame) 'alpha '(100 . 100))
+  (add-to-list 'default-frame-alist '(alpha . (100 . 100))))
+
+(defun n/search-ddg ()
+  "Search DuckDuckGo for a query."
+  (interactive)
+  (let ((q (read-string "Query: ")))
+    (eww (concat "https://ddg.gg/?q=" q))))
+
+(defun n/search-google ()
+  "Search Google for a query."
+  (interactive)
+  (let ((q (read-string "Query: ")))
+    (eww (concat "https://google.com/search?q=" q))))
+
+(defun n/search-wiki ()
+  "Search wikipedia for a query."
+  (interactive)
+  (let ((q (read-string "Query: ")))
+    (eww (concat "https://wikipedia.org/wiki/" q))))
+
+(defun n/search-cpp ()
+  "Search wikipedia for a query."
+  (interactive)
+  (let ((q (read-string "Query: ")))
+    (eww (concat "https://ddg.gg/?sites=cppreference.com&q=" q))))
+
+(defun n/search-stackoverflow ()
+  "Search StackOverflow for a query."
+  (interactive)
+  (let ((q (read-string "Query: ")))
+    (eww (concat "https://ddg.gg/?sites=stackoverflow.com&q=" q))))
+
 (use-package emacs
   :ensure nil
   :custom
@@ -38,28 +89,32 @@
   :hook
   (prog-mode . display-line-numbers-mode)
   :config
-  (add-to-list 'load-path "~/.emacs.d/custom")
-  (add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
   (load custom-file 'noerror 'nomessage)
   (global-set-key (kbd "<escape>")      'keyboard-escape-quit)
   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font"  :height 140)
   (setq scroll-margin 8)
   (setq scroll-conservatively 100)
-  (setq compilation-window-height 10)
   (setq use-short-answers t)
   (setq global-hl-line-mode nil)
+  (add-to-list 'load-path "~/.emacs.d/custom")
   (load-theme 'modus-vivendi :no-confirm)
   (fset #'jsonrpc--log-event #'ignore)
-  (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
+  (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?|))
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
   (setq tramp-default-method "ssh")
   (setq tramp-verbose 1)
-  (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+  ;; (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
   (setq tramp-default-method "ssh")
+  (setq image-animate-speed-alist '((gif . 0.1)))
+  (setq image-use-external-converter t)
   (setq auto-save-file-name-transforms
 		`((".*" "~/.emacs-saves/" t)))
   (setq backup-directory-alist `(("." . "~/.saves")))
+  (add-to-list
+   'display-buffer-alist
+   '("\\*compilation\\*"
+     (display-buffer-no-window)))
   (when (eq window-system 'w32)
 	(setq tramp-default-method "plink")
 	(when (and (not (string-match putty-directory (getenv "PATH")))
@@ -87,9 +142,8 @@
   (savehist-mode 1)
   (indent-tabs-mode -1)
   (global-hl-line-mode 1)
+  (add-hook 'text-mode-hook 'display-line-numbers-mode)
   (modify-coding-system-alist 'file "" 'utf-8))
-
-(require 'nils-functions)
 
 (use-package dired
   :ensure nil
@@ -119,10 +173,12 @@
     (kbd "mm") 'dired-mark
     (kbd "mu") 'dired-unmark
     (kbd "mU") 'dired-unmark-all-marks
-    (kbd "!") 'dired-do-shell-command
+	(kbd "<leader> SPC") 'counsel-switch-buffer
+    (kbd "d !") 'dired-do-shell-command
     (kbd "R") 'dired-do-rename
     (kbd "S") 'dired-do-search
     (kbd "%") 'dired-create-empty-file
+    (kbd "^") 'dired-create-directory
     (kbd "C") 'dired-do-copy
     (kbd "Z") 'dired-do-compress-to))
 
@@ -135,6 +191,7 @@
 
 (use-package ivy
   :ensure t
+  :after evil
   :config
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t)
@@ -157,7 +214,6 @@
   :after ivy
   :config
   :bind (("M-x" . counsel-M-x)
-		 ("SPC SPC" . counsel-switch-buffer)
 		 ("C-h k" . counsel-descbinds)
          ("C-h f" . counsel-describe-function)))
 
@@ -177,12 +233,10 @@
 
 (use-package treesit-auto
   :ensure t
-  :after emacs
   :custom
   (treesit-auto-install 'prompt)
   :config
-  (treesit-auto-add-to-auto-mode-alist 'all)
-  (global-treesit-auto-mode t))
+  (global-treesit-auto-mode))
 
 (use-package diff-hl
   :defer t
@@ -223,22 +277,19 @@
   :after magit
   :config (magit-todos-mode 1))
 
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-global-mode 1))
+
 (use-package xclip
   :ensure t
   :defer t
   :hook
   (after-init . xclip-mode))
 
-(use-package flycheck
-  :ensure t
-  :config
-  (add-hook 'eglot-managed-mode-hook 'flycheck-mode)
-  (evil-define-key 'normal prog-mode-map (kbd "[ e") 'flycheck-previous-error)
-  (evil-define-key 'normal prog-mode-map (kbd "] e") 'flycheck-next-error))
-
 (use-package markdown-mode
   :ensure t
-  :straight t
   :mode ("\\.md" . markdown-view-mode)
   :config
   (setq markdown-command "marked")
@@ -273,22 +324,70 @@
   (evil-define-key 'normal 'global (kbd "<leader> u") 'undo-tree-visualize)
   (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/.cache/undo"))))
 
-(use-package eglot
+(use-package lsp-mode
   :ensure t
-  :hook (prog-mode . eglot-ensure)
+  :hook
+  (java-ts-mode . lsp)
+  :custom
+  (lsp-idle-delay 0.5)
+  (lsp-log-io nil)
+  (lsp-lens-enable t)
+  (lsp-prefer-flymake nil)
+  (lsp-enable-snippet t)
+  (lsp-ui-sideline-show-hover nil)
+  (lsp-modeline-code-actions-enable nil)
+  (lsp-eldoc-render-all t)
+  (lsp-headerline-breadcrumb-enable nil)
   :config
-  (evil-define-key 'normal eglot-mode-map (kbd "g r") 'xref-find-references)
-  (evil-define-key 'normal eglot-mode-map (kbd "g d") 'xref-find-definitions)
-  (evil-define-key 'normal eglot-mode-map (kbd "<leader> c a") 'eglot-code-actions)
-  (evil-define-key 'normal eglot-mode-map (kbd "<leader> r n") 'eglot-rename)
-  (evil-define-key 'normal eglot-mode-map (kbd "<leader> f m") 'eglot-format-buffer)
-  (setq eglot-autoshutdown t)
-  (setq eglot-send-changes-idle-time 0.1)
-  (setq eglot-ignored-server-capabilities '(:documentHighlightProvider))
-  (setq eglot-connect-timeout 10)
-  (setq eglot-sync-connect 1)
-  (setq eglot-events-buffer-size 0)
-  (add-to-list 'eglot-server-programs '(python-ts-mode . ("pylsp"))))
+  (defun n/lsp-setup ()
+	(evil-define-key 'normal prog-mode-map
+	  (kbd "<leader> c a") 'lsp-execute-code-action
+	  (kbd "g d") 'lsp-find-definition
+	  (kbd "<leader> g r") 'lsp-find-references
+	  (kbd "<leader> f m") 'lsp-format-buffer
+	  (kbd "<leader> f r") 'lsp-format-region
+	  (kbd "<leader> r n") 'lsp-rename)
+    (setq-local eldoc-display-functions '(eldoc-display-in-buffer)))
+  (add-hook 'lsp-mode-hook #'n/lsp-setup))
+
+(use-package lsp-ui
+  :ensure t
+  :custom
+  (lsp-ui-doc-enable t)
+  (lsp-ui-sideline-enable nil)
+  (lsp-ui-doc-delay 0)
+  (lsp-ui-doc-use-childframe t)
+  ;; (lsp-ui-doc-alignment 'frame)
+  (lsp-ui-doc-alignment 'window)
+  (lsp-ui-doc-position 'bottom)
+  ;; (lsp-ui-doc-position 'top)
+  (lsp-ui-doc-show-with-cursor t)
+  (lsp-ui-doc-show-with-mouse t)
+  (lsp-flycheck-live-reporting nil)
+  :hook (lsp-mode . lsp-ui-mode)
+  :config
+  (ef-themes-with-colors
+    (set-face-attribute 'lsp-ui-doc-background nil :background bg-main)))
+
+(use-package lsp-java
+  :after lsp)
+
+;; (use-package eglot
+;;   :ensure t
+;;   :hook (prog-mode . eglot-ensure)
+;;   :config
+;;   (evil-define-key 'normal eglot-mode-map (kbd "g r") 'xref-find-references)
+;;   (evil-define-key 'normal eglot-mode-map (kbd "g d") 'xref-find-definitions)
+;;   (evil-define-key 'normal eglot-mode-map (kbd "<leader> c a") 'eglot-code-actions)
+;;   (evil-define-key 'normal eglot-mode-map (kbd "<leader> r n") 'eglot-rename)
+;;   (evil-define-key 'normal eglot-mode-map (kbd "<leader> f m") 'eglot-format-buffer)
+;;   (setq eglot-autoshutdown t)
+;;   (setq eglot-send-changes-idle-time 0.1)
+;;   (setq eglot-ignored-server-capabilities '(:documentHighlightProvider))
+;;   (setq eglot-connect-timeout 10)
+;;   (setq eglot-sync-connect 1)
+;;   (setq eglot-events-buffer-size 0)
+;;   (add-to-list 'eglot-server-programs '(python-ts-mode . ("pylsp"))))
 
 (use-package rainbow-delimiters
   :ensure t
@@ -357,7 +456,8 @@
   (evil-define-key 'motion 'global (kbd "C-p") 'project-find-file)
   (evil-define-key 'normal 'global (kbd "<leader> p p") 'projectile-switch-project)
   (evil-define-key 'normal 'global (kbd "<leader> p d") 'project-dired)
-  (evil-define-key 'normal 'global (kbd "<leader> p s") 'project-shell)
+  (evil-define-key 'normal 'global (kbd "<leader> p s") 'project-eshell)
+  (evil-define-key 'motion 'global (kbd "<leader> p s") 'project-eshell)
   (evil-define-key 'normal 'global (kbd "<leader> p b") 'project-switch-to-buffer)
   (evil-define-key 'motion 'global (kbd "<leader> p p") 'projectile-switch-project)
   (evil-define-key 'normal 'global (kbd "<leader> p f") 'project-find-file)
@@ -376,6 +476,7 @@
 
 (use-package harpoon
   :ensure t
+  :after evil
   :config
   (evil-define-key 'normal 'global
 	(kbd "<leader> 1") 'harpoon-go-to-1
@@ -495,7 +596,6 @@
 
   (setq evil-emacs-state-modes '())
   (evil-set-initial-state 'term-mode 'insert)
-  (evil-set-initial-state 'vterm-mode 'insert)
   (evil-set-initial-state 'image-mode 'motion)
   (evil-set-initial-state 'special-mode 'motion)
   (evil-set-initial-state 'eww-mode 'motion)
@@ -510,6 +610,7 @@
   (evil-set-initial-state 'magit-stashes-mode 'normal)
   (evil-set-initial-state 'epa-key-list-mode 'motion)
   (evil-set-initial-state 'fuel-debug-mode 'motion)
+  (evil-set-initial-state 'xref--xref-buffer-mode 'motion)
 
   (evil-define-key 'normal 'global (kbd "<leader> s s") 'hydra-search/body)
   (evil-define-key 'normal 'global (kbd "C-u") 'n/evil-scroll-up)
@@ -518,7 +619,10 @@
   (evil-define-key 'normal 'global (kbd "<leader> c e") 'compile-goto-error)
   (evil-define-key 'normal 'global (kbd "<leader> r c") 'recompile)
   (evil-define-key 'normal 'global (kbd "<leader> !") 'shell-command)
-  (evil-define-key 'normal xref--xref-buffer-mode-map (kbd "CR") 'xref-goto-xref)
+  (evil-define-key 'motion 'global (kbd "<leader> !") 'shell-command)
+  (evil-define-key 'normal xref--xref-buffer-mode-map (kbd "<return>") 'xref-goto-xref)
+  (evil-define-key 'motion xref--xref-buffer-mode-map (kbd "<return>") 'xref-goto-xref)
+  (evil-define-key 'motion xref--xref-buffer-mode-map (kbd "C-<return>") 'xref-goto-xref)
   (evil-define-key 'motion eww-mode-map (kbd "C-o") 'eww-back-url)
   (evil-define-key 'motion eww-mode-map (kbd "C-i") 'eww-forward-url)
   (evil-define-key 'normal emacs-lisp-mode-map (kbd "<leader> i") 'eval-buffer)
@@ -529,6 +633,13 @@
   (evil-define-key 'normal 'motion (kbd "C-b") 'dired-jump)
   (evil-define-key 'normal 'global (kbd "<leader> SPC") 'counsel-switch-buffer)
   (evil-define-key 'motion 'global (kbd "<leader> SPC") 'counsel-switch-buffer))
+
+(use-package flycheck
+  :ensure t
+  :after evil
+  :config
+  (evil-define-key 'normal prog-mode-map (kbd "[ e") 'flycheck-previous-error)
+  (evil-define-key 'normal prog-mode-map (kbd "] e") 'flycheck-next-error))
 
 (use-package evil-commentary
   :ensure t
@@ -569,12 +680,6 @@
     ("0" text-scale-set "reset")
     ("-" text-scale-decrease "out")))
 
-(use-package vterm
-  :ensure t
-  :config
-  (evil-define-key 'normal vterm-mode-map (kbd "p") 'vterm-yank)
-  (evil-define-key 'normal 'global (kbd "<leader> v t") 'vterm))
-
 (use-package pdf-tools
   :ensure t
   :mode ("\\.pdf" . pdf-view-mode)
@@ -584,7 +689,11 @@
   (pdf-view-themed-minor-mode . (lambda () (internal-show-cursor nil nil)))
   :config
   (define-key pdf-view-mode-map (kbd "q") nil)
-
+  (add-to-list 'display-buffer-alist
+			   '((derived-mode . pdf-view-mode)
+				 (display-buffer-in-side-window)
+				 (side . right)
+				 (window-width . 80)))
   (evil-define-key 'normal pdf-view-mode-map
     "h" 'scroll-left
     "l" 'scroll-right
@@ -601,6 +710,28 @@
     "[" 'pdf-view-previous-page-command
     "-" 'pdf-view-shrink
     "+" 'pdf-view-enlarge))
+
+(use-package tex
+  :ensure auctex
+  :mode ("\\.tex\\'" . latex-mode)
+  :config (progn
+			(setq TeX-source-correlate-mode t)
+			(setq TeX-source-correlate-method 'synctex)
+			(require 'reftex)
+			(setq reftex-plug-into-AUCTeX t)
+			(require 'auctex-latexmk)
+			(auctex-latexmk-setup)
+			(pdf-tools-install)
+			(setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+				  TeX-source-correlate-start-server t)
+			;; Update PDF buffers after successful LaTeX runs
+			(add-hook 'TeX-after-compilation-finished-functions
+					  #'TeX-revert-document-buffer)
+			(add-hook 'LaTeX-mode-hook
+					  (lambda ()
+						(reftex-mode t)
+						(flyspell-mode t)))
+			))
 
 (provide 'init)
 ;;; init.el ends here

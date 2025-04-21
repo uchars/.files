@@ -21,12 +21,6 @@ if [ -x "$(command -v xinput)" ]; then
 	#xinput set-prop $device_id "libinput Natural Scrolling Enabled" 1
 fi
 
-#if ! [[ $(/bin/pgrep -f "dwmstatus.sh") ]]; then
-#	if [ -x "$(command -v dwmstatus.sh)" ]; then
-#		dwmstatus.sh &
-#	fi
-#fi
-
 command -v setxkbmap >/dev/null 2>&1 && setxkbmap us
 
 [ -f "$HOME/.ghcup/env" ] && . "$HOME/.ghcup/env"
@@ -34,4 +28,5 @@ command -v setxkbmap >/dev/null 2>&1 && setxkbmap us
 if ! [ -d "/tmp/scratch" ]; then
 	mkdir /tmp/scratch
 fi
-. "$HOME/.cargo/env"
+
+if [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env" 

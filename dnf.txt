@@ -1,0 +1,8 @@
+htop
+gnome-shell-extension-appindicator
+seahorse
+stow
+steam-devices
+gnome-tweaks
+@virtualization
+wine.i686
