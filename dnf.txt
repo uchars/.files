@@ -6,3 +6,10 @@ steam-devices
 gnome-tweaks
 @virtualization
 wine.i686
+vim
+kmodtool
+akmods
+mokutil
+openssl
+texlive-scheme-full
+texlive-biblatex

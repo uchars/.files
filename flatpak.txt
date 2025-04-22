@@ -9,3 +9,4 @@ org.gimp.GIMP
 org.gnome.Extensions
 org.gnome.seahorse.Application
 org.kde.krita
+io.github.vikdevelop.SaveDesktop
