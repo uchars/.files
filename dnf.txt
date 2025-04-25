@@ -5,7 +5,6 @@ stow
 steam-devices
 gnome-tweaks
 @virtualization
-wine.i686
 vim
 kmodtool
 akmods
@@ -13,3 +12,6 @@ mokutil
 openssl
 texlive-scheme-full
 texlive-biblatex
+vlc
+Xournalpp
+java-21-openjdk.x86_64
