@@ -28,6 +28,7 @@ alias h="history | grep -i "
 alias diskspace="du -S | sort -nr | more"
 
 # list
+alias ls="ls --color"
 alias ll="ls -al"
 alias la="ls -A"
 alias l="ls"
@@ -37,6 +38,7 @@ alias kger="setxkbmap de"
 alias kus="setxkbmap us"
 
 alias ..="cd .."
+alias c="cd"
 
 # sound
 alias vol="amixer set Master --quiet"
