@@ -21,7 +21,7 @@ sudo apt update
 
 # Install required base packages
 info "Installing base packages: git, vim, stow..."
-sudo apt install -y git vim stow
+sudo apt install -y git vim stow cmake
 
 GIT_NAME="Nils"
 GIT_EMAIL="40796807+uchars@users.noreply.github.com"
@@ -46,6 +46,9 @@ info "Stowing dotfiles..."
 cd "$DOTFILES_DIR"
 stow .
 
+info "Installing dependencies from deb-requirements.txt"
+xargs sudo apt install -y < "$DOTFILES_DIR/deb-requirements.txt"
+
 # Add Yubico PPA and install YubiKey tools
 info "Adding Yubico PPA..."
 sudo add-apt-repository -y ppa:yubico/stable
@@ -61,31 +64,43 @@ NVIM_DIR="$HOME/.local/src/neovim"
 NVIM_BIN_DIR="$HOME/.local/bin/nvim/bin"
 mkdir -p "$NVIM_DIR"
 
-if [ -d "$NVIM_DIR" ]; then
-    warn "$NVIM_DIR already exists. Pulling latest changes."
+if [ -d "$NVIM_DIR/.git" ]; then
+    info "Neovim repo already exists. Pulling latest changes..."
     cd "$NVIM_DIR"
     git pull
 else
-    info "Cloning Neovim..."
+    info "Cloning Neovim into $NVIM_DIR..."
     git clone https://github.com/neovim/neovim.git "$NVIM_DIR"
     cd "$NVIM_DIR"
 fi
 
 info "Building Neovim..."
 make CMAKE_BUILD_TYPE=RelWithDebInfo
-
-info "Installing Neovim to $NVIM_BIN_DIR..."
-make install PREFIX="$HOME/.local/bin/nvim"
-
-info "Bootstrap complete. You may need to restart your terminal session."
+sudo make install
 
 # Install Rust
-log "Installing Rust via rustup..."
+info "Installing Rust via rustup..."
 
 if ! command -v rustup >/dev/null 2>&1; then
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-    log "Rust installed."
+    info "Rust installed."
 else
-    log "Rust is already installed. Skipping."
+    info "Rust is already installed. Skipping."
 fi
+
+info "Installing NVM (Node Version Manager)..."
+if [ ! -d "$HOME/.nvm" ]; then
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+else
+    info "NVM already installed. Skipping download."
+fi
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+info "Installing latest LTS version of Node.js (includes npm)..."
+nvm install --lts
+info "Setting default Node.js version to LTS..."
+nvm alias default 'lts/*'
+info "Node.js and npm installed via NVM."
+
+info "Bootstrap complete. You may need to restart your terminal session."
 

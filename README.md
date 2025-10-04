@@ -3,7 +3,7 @@
 ## Mint
 
 ```
-xargs sudo apt install -y < deb-requirements.txt
+bash <(curl -s https://raw.githubusercontent.com/uchars/.files/refs/heads/master/mint-bootstrap.sh)
 ```
 
 `sudo update-alternatives --config default.plymouth`
