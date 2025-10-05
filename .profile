@@ -29,4 +29,3 @@ if ! [ -d "/tmp/scratch" ]; then
 	mkdir /tmp/scratch
 fi
 
-if [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env" 

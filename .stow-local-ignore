@@ -1,5 +1,6 @@
 deb-requirements.txt
 README.md
+mint-bootstrap.sh
 archsetup.sh
 LICENSE
 .local/share
