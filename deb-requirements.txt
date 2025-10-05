@@ -71,3 +71,4 @@ maven
 arandr
 virtualbox
 wmacpi
+ffmpegthumbs
