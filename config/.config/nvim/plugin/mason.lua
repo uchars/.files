@@ -1,9 +1,9 @@
 local ok, _ = pcall(require, "mason")
 local ok_lsp, mason_lsp = pcall(require, "mason-lspconfig")
 local is_nixos = vim.fn.executable("nixos-rebuild")
-if not ok and not ok_lsp or is_nixos then
-	return
-end
+-- if not ok and not ok_lsp or is_nixos then
+-- 	return
+-- end
 
 local haskell_installed = vim.fn.executable("ghcup") == 1
 local py_installed = vim.fn.executable("python") == 1 or vim.fn.executable("python3") == 1
