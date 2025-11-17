@@ -11,8 +11,8 @@ get_ram_usage() {
 }
 
 while true; do
-    BAT_CAPACITY=$(cat /sys/class/power_supply/BAT1/capacity)
-    BAT_STATUS=$(cat /sys/class/power_supply/BAT1/status)
+    BAT_CAPACITY=$(cat /sys/class/power_supply/BAT0/capacity)
+    BAT_STATUS=$(cat /sys/class/power_supply/BAT0/status)
     SOUND_VOLUME=$(amixer sget Master | grep 'Right:' | awk -F'[][]' '{ print $2 }')
     SOUND_MUTED=$(amixer sget Master | grep 'Right:' | awk -F'[][]' '{ print $4 }')
     SPOTIFY_STR=""
