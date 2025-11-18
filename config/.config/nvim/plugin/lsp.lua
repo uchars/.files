@@ -197,6 +197,7 @@ local ok_flutter, flutter = pcall(require, "flutter-tools")
 if ok_flutter then
 	flutter.setup({
 		fvm = true,
+		flutter_path = os.getenv("HOME") .. "/fvm/default/bin/flutter",
 		lsp = {
 			on_attach = on_attach,
 			capabilities = capabilities,
