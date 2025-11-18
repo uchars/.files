@@ -60,6 +60,10 @@ require("lazy").setup({
 				tag = "v1.10.0",
 			},
 			{
+				"zapling/mason-conform.nvim",
+				config = true,
+			},
+			{
 				"jay-babu/mason-null-ls.nvim",
 			},
 			{

@@ -75,9 +75,10 @@ mason_lsp.setup({
 	ensure_installed = vim.tbl_keys(servers),
 })
 
-local ok_mason_format, format = pcall(require, "mason-null-ls")
+local ok_mason_format, format = pcall(require, "mason-conform")
 if ok_mason_format then
 	format.setup({
-		ensure_installed = { "stylua", "jq", "clang-format" }
+		automatic_installation = false,
+		ensure_installed = { "stylua", "jq", "prettierd", "clang-format" },
 	})
 end
