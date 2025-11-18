@@ -154,11 +154,6 @@ require("lspconfig").marksman.setup({
 	on_attach = on_attach,
 })
 
-require("lspconfig").dartls.setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
-
 require("lspconfig").cssls.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
