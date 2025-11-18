@@ -64,9 +64,6 @@ require("lazy").setup({
 				config = true,
 			},
 			{
-				"jay-babu/mason-null-ls.nvim",
-			},
-			{
 				"williamboman/mason-lspconfig.nvim",
 				tag = "v1.29.0",
 			},
