@@ -60,6 +60,9 @@ require("lazy").setup({
 				tag = "v1.10.0",
 			},
 			{
+				"jay-babu/mason-null-ls.nvim",
+			},
+			{
 				"williamboman/mason-lspconfig.nvim",
 				tag = "v1.29.0",
 			},
@@ -130,4 +133,13 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<CR>")
 		end,
 	},
+	{
+    'nvim-flutter/flutter-tools.nvim',
+    lazy = false,
+    dependencies = {
+        'nvim-lua/plenary.nvim',
+        'stevearc/dressing.nvim', -- optional for vim.ui.select
+    },
+    config = true,
+},
 })
