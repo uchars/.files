@@ -1,0 +1,32 @@
+[global]
+    font = Monospace 10
+    width = 300
+    height = 100
+    padding = 8
+    horizontal_padding = 8
+    frame_width = 1
+    separator_height = 2
+    frame_color = "#aaaaaa"
+    separator_color = "#aaaaaa"
+
+    timeout = 5
+    ignore_dbusclose = false
+
+    origin = top-right
+    offset = 10x50
+    alignment = left
+
+[urgency_low]
+    background = "#222222"
+    foreground = "#888888"
+    timeout = 5
+
+[urgency_normal]
+    background = "#285577"
+    foreground = "#ffffff"
+    timeout = 5
+
+[urgency_critical]
+    background = "#900000"
+    foreground = "#ffffff"
+    timeout = 0
