@@ -61,10 +61,6 @@ set $menu "rofi -show drun"
         $mod+4 workspace number 4
         $mod+5 workspace number 5
         $mod+6 workspace number 6
-        $mod+7 workspace number 7
-        $mod+8 workspace number 8
-        $mod+9 workspace number 9
-        $mod+0 workspace number 10
 
         # Move focused container to workspace
         $mod+Shift+1 move container to workspace number 1
@@ -73,10 +69,6 @@ set $menu "rofi -show drun"
         $mod+Shift+4 move container to workspace number 4
         $mod+Shift+5 move container to workspace number 5
         $mod+Shift+6 move container to workspace number 6
-        $mod+Shift+7 move container to workspace number 7
-        $mod+Shift+8 move container to workspace number 8
-        $mod+Shift+9 move container to workspace number 9
-        $mod+Shift+0 move container to workspace number 10
     }
 
 # Layout stuff:
@@ -155,22 +147,6 @@ bindsym $mod+r mode "resize"
     # Special key to take a screenshot with grim
     bindsym Print exec grim
 
-#
-# Status Bar:
-#
-# Read `man 5 sway-bar` for more information about this section.
-bar {
-    position top
-
-    # When the status_command prints a new line to stdout, swaybar updates.
-    # The default just shows the current date and time.
-    status_command while date +'%Y-%m-%d %X'; do sleep 1; done
-
-    colors {
-        statusline #ffffff
-        background #323232
-        inactive_workspace #32323200 #32323200 #5c5c5c
-    }
-}
+exec_always waybar &
 
 include @sysconfdir@/sway/config.d/*

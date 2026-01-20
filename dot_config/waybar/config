@@ -1,0 +1,45 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 30,
+  "modules-left": ["sway/workspaces", "sway/window"],
+  "modules-right": ["cpu", "memory", "network", "pulseaudio", "battery", "clock"],
+  "sway/workspaces": {
+    "format": "{icon}",
+    "all-outputs": true,
+    "disable-scroll": true,
+    "icon-0": "",
+    "icon-1": "",
+    "icon-2": "",
+    "icon-3": "",
+    "icon-4": ""
+  },
+  "sway/window": {
+    "format": "{title}",
+    "max-length": 50
+  },
+  "cpu": {
+    "format": "CPU: {usage}%"
+  },
+  "memory": {
+    "format": "RAM: {used} / {total} GB"
+  },
+  "network": {
+    "format-up": " {ipaddr}",
+    "format-down": "睊 Disconnected",
+    "interface": "enp42s0"
+  },
+  "pulseaudio": {
+    "format": " {volume}%"
+  },
+  "battery": {
+    "format": "{capacity}% {status}",
+    "format-charging": " {capacity}%",
+    "format-discharging": " {capacity}%",
+    "format-full": " Full"
+  },
+  "clock": {
+    "format": "{:%Y-%m-%d %H:%M:%S}"
+  }
+}
+

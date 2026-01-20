@@ -1,0 +1,24 @@
+* {
+    background: #000000;
+    color: #ffffff;
+    font-family: "Fira Code Nerd Font", monospace;
+}
+
+#sway-workspaces button {
+    padding: 0 8px;
+}
+
+#sway-window {
+    padding-left: 10px;
+}
+
+#cpu, #memory, #network, #pulseaudio, #battery, #clock {
+    padding: 0 10px;
+}
+
+/* Optional: hover effect for clickable modules */
+button:hover {
+    background-color: #222222;
+    border-radius: 4px;
+}
+
