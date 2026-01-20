@@ -13,10 +13,6 @@
     padding-left: 10px;
 }
 
-#cpu, #memory, #network, #pulseaudio, #battery, #clock {
-    padding: 0 10px;
-}
-
 /* Optional: hover effect for clickable modules */
 button:hover {
     background-color: #222222;
