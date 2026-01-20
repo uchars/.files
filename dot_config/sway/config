@@ -2,6 +2,12 @@
 set $mod Mod4
 set $mod2 Mod1
 
+font pango:SauceCodePro Nerd Font Medium 11
+
+# Window rules
+default_border pixel 0
+default_floating_border pixel 0
+
 # Home row direction keys, like vim
 set $left h
 set $down j
@@ -15,10 +21,11 @@ set $menu "rofi -show drun"
 ### Key bindings
     # Terminal
     bindsym $mod+Return exec $term
+    bindsym $mod+Shift+Return exec $term
     # Kill active window
     bindsym $mod+Shift+c kill
     # app launcher
-    bindsym $mod+d exec $menu
+    bindsym $mod+p exec $menu
 
     # Drag: super key + left click
     # resize: super key + right click
@@ -147,6 +154,8 @@ bindsym $mod+r mode "resize"
     # Special key to take a screenshot with grim
     bindsym Print exec grim
 
-exec_always waybar &
+bar {
+    swaybar_command waybar
+}
 
 include @sysconfdir@/sway/config.d/*

@@ -1,11 +1,12 @@
 * {
     background: #000000;
     color: #ffffff;
-    font-family: "Fira Code Nerd Font", monospace;
+    font-family: 'SauceCodePro Nerd Font', Roboto, Helvetica, Arial, sans-serif;
 }
 
 #sway-workspaces button {
     padding: 0 8px;
+    font-family: 'Font Awesome 7 Free Regular', Roboto, Helvetica, Arial, sans-serif;
 }
 
 #sway-window {

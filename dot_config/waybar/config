@@ -8,11 +8,13 @@
     "format": "{icon}",
     "all-outputs": true,
     "disable-scroll": true,
-    "icon-0": "",
-    "icon-1": "",
-    "icon-2": "",
-    "icon-3": "",
-    "icon-4": ""
+    "format-icons": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+    }
   },
   "sway/window": {
     "format": "{title}",
