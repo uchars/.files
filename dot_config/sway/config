@@ -18,10 +18,8 @@ for_window [app_id="org.pulseaudio.pavucontrol"] floating enable, resize set wid
 for_window [app_id="^firefox$" title="^Extension: \(Bitwarden Password Manager\) - Bitwarden — Mozilla Firefox$"] floating enable
 for_window [class="Emulator"] floating enable
 
-# Bluetooth stuff
-set $bluetooth_term alacritty --class bluetui -e bluetui
-for_window [app_id="bluetui"] floating enable, resize set 900 600, move position 2530 37
-bindsym $mod+Shift+b exec swaymsg '[app_id="bluetui"] scratchpad show' || exec $bluetooth_term
+# waybar TUI stuff
+for_window [app_id="sysscratch"] floating enable, resize set 900 600, move position 2520 27
 
 # wallpaper
 output * bg ~/.local/wallpaper.jpg fill

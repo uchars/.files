@@ -32,7 +32,7 @@
       "format": "<span color='#afa193'><b></b></span><span color='#252525'> / </span>",
       "exec": "bluetoothctl show | grep -q 'Powered: yes' && echo on || echo off",
       "interval": 5,
-      "on-click": "sway-bluetui-toggle.sh",
+      "on-click": "sway-scratchpad-toggle.sh bluetui",
       "tooltip": "Manage Bluetooth (bluetui)"
     },
     "sway/window": {
@@ -48,7 +48,7 @@
     },
     "pulseaudio": {
       "format": "<span color='#afa193'><b>vol:</b></span> {volume}%<span color='#252525'> / </span>",
-      "on-click": "pavucontrol"
+      "on-click": "sway-scratchpad-toggle.sh wiremix",
     },
     "sway/language": {
       "format": "<span color='#afa193'><b>key: </b></span>{short}<span color='#252525'> / </span>",
