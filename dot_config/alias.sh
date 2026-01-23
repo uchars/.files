@@ -19,6 +19,9 @@ alias gd="git diff"
 alias ga="git add"
 alias gsub="git submodule"
 
+# chezmoi
+alias ce="chezmoi edit"
+
 # apt
 alias agi="sudo apt-get install "
 

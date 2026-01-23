@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-if [[ -x $HOME/.local/bin/dwmstatus.sh ]]; then
+if command -v dwmblocks >/dev/null 2>&1; then
+    dwmblocks &
+else
     $HOME/.local/bin/dwmstatus.sh &
 fi
 if [[ -f $HOME/.fehbg ]]; then

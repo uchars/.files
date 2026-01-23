@@ -1,50 +1,86 @@
 {
   "layer": "bottom",
-  "position": "top",
-  "height": 30,
-  "spacing": 0,
-  "modules-left": ["sway/workspaces", "sway/window", "sway/mode"],
-  "modules-right": [ "cpu", "memory", "pulseaudio", "sway/language", "clock", "battery", "tray"],
-  "sway/workspaces": {
-    "format": "{icon}",
-    "all-outputs": true,
-    "disable-scroll": true,
-    "format-icons": {
-        "1": "",
+    "position": "top",
+    "height": 30,
+    "spacing": 0,
+    "modules-left": ["sway/workspaces", "sway/window", "sway/mode"],
+    "modules-right": [
+      "cpu"
+      ,"memory"
+      ,"pulseaudio"
+      ,"sway/language"
+      ,"custom/bluetooth"
+      ,"clock#date"
+      ,"clock#time"
+      ,"battery"
+      ,"tray"
+    ],
+    "sway/workspaces": {
+      "format": "{icon}",
+      "all-outputs": true,
+      "disable-scroll": true,
+      "format-icons": {
+        "1": "+",
         "2": "",
         "3": "",
         "4": "",
         "5": "",
         "6": ""
+      }
+    },
+    "custom/bluetooth": {
+      "format": "<span color='#afa193'><b></b></span><span color='#252525'> / </span>",
+      "exec": "bluetoothctl show | grep -q 'Powered: yes' && echo on || echo off",
+      "interval": 5,
+      "on-click": "sway-bluetui-toggle.sh",
+      "tooltip": "Manage Bluetooth (bluetui)"
+    },
+    "sway/window": {
+      "format": "{title}",
+      "max-length": 50
+    },
+    "cpu": {
+      "format": "<span color='#afa193'><b>cpu:</b></span> {usage}%<span color='#252525'> / </span>"
+    },
+    "memory": {
+      "format": "<span color='#afa193'><b>mem:</b></span> {0}%<span color='#252525'> / </span>",
+      "tooltip-format": "{used} / {total} GB"
+    },
+    "pulseaudio": {
+      "format": "<span color='#afa193'><b>vol:</b></span> {volume}%<span color='#252525'> / </span>",
+      "on-click": "pavucontrol"
+    },
+    "sway/language": {
+      "format": "<span color='#afa193'><b>key: </b></span>{short}<span color='#252525'> / </span>",
+      "tooltip": false
+    },
+    "battery": {
+      "format": "{capacity}% {status}",
+      "format-charging": " {capacity}%",
+      "format-discharging": " {capacity}%",
+      "format-full": " Full"
+    },
+    "clock#time": {
+      "format": "<span color='#afa193'><b>time:</b></span> {:%H:%M:%S}<span color='#252525'> / </span>",
+      "interval": 1,
+      "tooltip": false
+    },
+    "clock#date": {
+      "format": "<span color='#afa193'><b>date:</b></span> {:%Y/%m/%d}<span color='#252525'> / </span>",
+      "tooltip-format": "<tt><small>{calendar}</small></tt>",
+      "calendar": {
+        "mode": "year",
+        "mode-mon-col": 3,
+        "weeks-pos": "right",
+        "on-scroll": 1,
+        "format": {
+          "months": "<span color='#ffead3'><b>{}</b></span>",
+          "days": "<span color='#ecc6d9'><b>{}</b></span>",
+          "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
+          "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+          "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+        }
+      }
     }
-  },
-  "sway/window": {
-    "format": "{title}",
-    "max-length": 50
-  },
-  "cpu": {
-    "format": "<span color='#afa193'><b>cpu:</b></span> {usage}%<span color='#252525'> / </span>"
-  },
-  "memory": {
-    "format": "<span color='#afa193'><b>mem:</b></span> {0}%<span color='#252525'> / </span>",
-    "tooltip-format": "{used} / {total} GB"
-  },
-  "pulseaudio": {
-    "format": "<span color='#afa193'><b>vol:</b></span> {volume}%<span color='#252525'> / </span>"
-  },
-  "sway/language": {
-    "format": "<span color='#afa193'><b>key: </b></span>{short}<span color='#252525'> / </span>",
-    "tooltip": false
-  },
-  "battery": {
-    "format": "{capacity}% {status}",
-    "format-charging": " {capacity}%",
-    "format-discharging": " {capacity}%",
-    "format-full": " Full"
-  },
-  "clock": {
-    "format": "<span color='#afa193'><b>time:</b> </span>{:%Y/%m/%d %H:%M:%S}",
-    "interval": 1
-  }
 }
 

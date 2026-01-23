@@ -14,6 +14,10 @@ if [ -d "$HOME/.local/bin/" ]; then
 	PATH="$HOME/.local/bin/:$PATH"
 fi
 
+if [ -d "$HOME/.local/bin/dwmblocks/" ]; then
+	PATH="$HOME/.local/bin/dwmblocks/:$PATH"
+fi
+
 if [ -d "$HOME/.config/emacs/bin" ]; then
 	PATH="$HOME/.config/emacs/bin:$PATH"
 fi
@@ -29,3 +33,11 @@ fi
 if [ -d "$HOME/Downloads/zig-linux-x86_64-0.14.0" ]; then
 	PATH="$HOME/Downloads/zig-linux-x86_64-0.14.0:$PATH"
 fi
+
+export ANDROID_HOME=$HOME/Android/Sdk
+export ANDROID_SDK_ROOT=/opt/android-sdk
+export PATH=$ANDROID_SDK_ROOT/platform-tools:$PATH
+export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH
+export PATH=$HOME/.pub-cache/bin:$PATH
+export PATH="$PATH":"$HOME/fvm/default/bin"
+

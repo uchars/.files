@@ -26,3 +26,6 @@ if [ -e "$HOME/.cargo/env" ]; then
 fi
 
 [ -f "$HOME/.ghcup/env" ] && . "$HOME/.ghcup/env"
+
+export XDG_CURRENT_DESKTOP=sway
+export XDG_SESSION_TYPE=wayland

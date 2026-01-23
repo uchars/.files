@@ -114,6 +114,7 @@ require("lazy").setup({
 	{
 		-- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
+        tag = "v0.10.0",
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter-context",
 			-- { dir = "$HOME/src/nvim-treesitter-context" },
