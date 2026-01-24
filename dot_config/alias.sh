@@ -20,7 +20,9 @@ alias ga="git add"
 alias gsub="git submodule"
 
 # chezmoi
-alias ce="chezmoi edit"
+alias cz="chezmoi"
+alias cze="chezmoi edit"
+alias cza="chezmoi apply"
 
 # apt
 alias agi="sudo apt-get install "

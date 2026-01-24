@@ -35,7 +35,7 @@
       "format": " ",
     },
     "bluetooth": {
-      "format": "<span color='#afa193'><b></b></span>{status}<span color='#252525'> / </span>",
+      "format": "<span color='#afa193'><b></b></span> {status}<span color='#252525'> / </span>",
       "format-connected": "<span color='#afa193'><b></b></span> {num_connections}<span color='#252525'> / </span>",
       "tooltip-format": "{num_connections} connected",
       "tooltip-format-connected": "{device_enumerate}",
