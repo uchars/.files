@@ -10,6 +10,7 @@ default_border pixel 0
 default_floating_border pixel 0
 for_window [title="Picture-in-Picture"] floating enable, sticky enable, move position center, resize set 960 540
 for_window [app_id="discord"] screen_capture off
+for_window [app_id="firefox"] screen_capture off
 for_window [app_id="com.yubico.yubioath"] floating enable, move position center, resize set 720 720, screen_capture off
 for_window [app_id="OpenToonz"] move to workspace 5
 for_window [class="PenTablet"] floating enable, move position center
@@ -17,6 +18,7 @@ for_window [class="krita"] move to workspace 5
 for_window [app_id="org.pulseaudio.pavucontrol"] floating enable, resize set width 700 height 500, move position 2648 37
 for_window [app_id="^firefox$" title="^Extension: \(Bitwarden Password Manager\) - Bitwarden — Mozilla Firefox$"] floating enable
 for_window [class="Emulator"] floating enable
+for_window [app_id="nm-connection-editor"] floating enable, move position 2648 37
 
 # waybar TUI stuff
 for_window [app_id="sysscratch"] floating enable, resize set 900 600, move position 2520 27

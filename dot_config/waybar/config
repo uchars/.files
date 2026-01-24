@@ -5,15 +5,18 @@
     "spacing": 0,
     "modules-left": ["sway/workspaces", "sway/window", "sway/mode"],
     "modules-right": [
-      "cpu"
+      "privacy"
+      ,"custom/spacer"
+      ,"cpu"
       ,"memory"
       ,"pulseaudio"
+      ,"cava"
       ,"sway/language"
-      ,"custom/bluetooth"
-      ,"clock#date"
-      ,"clock#time"
+      ,"bluetooth"
+      ,"clock"
       ,"battery"
       ,"tray"
+      ,"custom/spacer"
     ],
     "sway/workspaces": {
       "format": "{icon}",
@@ -28,8 +31,16 @@
         "6": ""
       }
     },
-    "custom/bluetooth": {
-      "format": "<span color='#afa193'><b></b></span><span color='#252525'> / </span>",
+    "custom/spacer": {
+      "format": " ",
+    },
+    "bluetooth": {
+      "format": "<span color='#afa193'><b></b></span>{status}<span color='#252525'> / </span>",
+      "format-connected": "<span color='#afa193'><b></b></span> {num_connections}<span color='#252525'> / </span>",
+      "tooltip-format": "{num_connections} connected",
+      "tooltip-format-connected": "{device_enumerate}",
+      "tooltip-format-enumerate-connected": "{device_alias}",
+      "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_battery_percentage}%",
       "exec": "bluetoothctl show | grep -q 'Powered: yes' && echo on || echo off",
       "interval": 5,
       "on-click": "sway-scratchpad-toggle.sh bluetui",
@@ -52,6 +63,7 @@
     },
     "sway/language": {
       "format": "<span color='#afa193'><b>key: </b></span>{short}<span color='#252525'> / </span>",
+      "on-click": "swaymsg input type:keyboard xkb_switch_layout next",
       "tooltip": false
     },
     "battery": {
@@ -60,13 +72,9 @@
       "format-discharging": " {capacity}%",
       "format-full": " Full"
     },
-    "clock#time": {
-      "format": "<span color='#afa193'><b>time:</b></span> {:%H:%M:%S}<span color='#252525'> / </span>",
+    "clock": {
+      "format": "<span color='#afa193'><b>date:</b></span> {:%a, %b %d, %Y <span color='#93979e'>[</span>%H:%M:%S<span color='#93979e'>]</span>}<span color='#252525'> / </span>",
       "interval": 1,
-      "tooltip": false
-    },
-    "clock#date": {
-      "format": "<span color='#afa193'><b>date:</b></span> {:%Y/%m/%d}<span color='#252525'> / </span>",
       "tooltip-format": "<tt><small>{calendar}</small></tt>",
       "calendar": {
         "mode": "year",
@@ -81,6 +89,30 @@
           "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
         }
       }
-    }
+    },
+    "privacy": {
+      "icon-spacing": 4,
+      "icon-size": 18,
+      "transition-duration": 250,
+      "modules": [
+      {
+        "type": "screenshare",
+        "tooltip": true,
+        "tooltip-icon-size": 24
+      },
+      {
+        "type": "audio-in",
+        "tooltip": true,
+        "tooltip-icon-size": 24
+      }
+      ],
+      "ignore-monitor": true,
+      //"ignore": [
+      //{
+      //  "type": "screenshare",
+      //  "name": "obs"
+      //}
+      //]
+    },
 }
 
