@@ -3,7 +3,7 @@
     "position": "top",
     "height": 30,
     "spacing": 0,
-    "modules-left": ["sway/workspaces", "sway/window", "sway/mode"],
+    "modules-left": ["hyprland/workspaces", "window", "mode"],
     "modules-right": [
       "privacy"
       ,"custom/spacer"
@@ -11,14 +11,14 @@
       ,"memory"
       ,"pulseaudio"
       ,"cava"
-      ,"sway/language"
+      ,"keyboard"
       ,"bluetooth"
       ,"clock"
       ,"battery"
       ,"tray"
       ,"custom/spacer"
     ],
-    "sway/workspaces": {
+    "hyprland/workspaces": {
       "format": "{icon}",
       "all-outputs": true,
       "disable-scroll": true,
@@ -43,10 +43,10 @@
       "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_battery_percentage}%",
       "exec": "bluetoothctl show | grep -q 'Powered: yes' && echo on || echo off",
       "interval": 5,
-      "on-click": "sway-scratchpad-toggle.sh bluetui",
+      "on-click": "scratchpad-toggle.sh bluetui",
       "tooltip": "Manage Bluetooth (bluetui)"
     },
-    "sway/window": {
+    "window": {
       "format": "{title}",
       "max-length": 50
     },
@@ -59,11 +59,11 @@
     },
     "pulseaudio": {
       "format": "<span color='#afa193'><b>vol:</b></span> {volume}%<span color='#252525'> / </span>",
-      "on-click": "sway-scratchpad-toggle.sh wiremix",
+      "on-click": "scratchpad-toggle.sh wiremix",
     },
-    "sway/language": {
-      "format": "<span color='#afa193'><b>key: </b></span>{short}<span color='#252525'> / </span>",
-      "on-click": "swaymsg input type:keyboard xkb_switch_layout next",
+    "keyboard": {
+      "format": "<span color='#afa193'><b>key: </b></span>{layout}<span color='#252525'> / </span>",
+      "on-click": "hyprctl dispatch exec swaymsg input type:keyboard xkb_switch_layout next",
       "tooltip": false
     },
     "battery": {

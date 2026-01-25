@@ -1,10 +1,22 @@
 #!/usr/bin/env bash
+
 if command -v dwmblocks >/dev/null 2>&1; then
-    dwmblocks &
-else
-    $HOME/.local/bin/dwmstatus.sh &
+   dwmblocks &
 fi
+
+if command -v picom >/dev/null 2>&1; then
+    picom --no-fading-openclose &
+fi
+
+if command -v dunst >/dev/null 2>&1; then
+    dunst --config "$HOME/.config/dunst/dunstrc" &
+fi
+
+xrandr --output DP-0 --mode 3440x1440 --rate 143.92 --primary --pos 0x0
+xrandr --output HDMI-0 --mode 1920x1080 --pos 760x1440
+
 if [[ -f $HOME/.fehbg ]]; then
     $HOME/.fehbg &
 fi
+
 exec dwm

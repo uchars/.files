@@ -26,6 +26,7 @@ require("lazy").setup({
 	"nvim-tree/nvim-web-devicons",
 	"tpope/vim-sleuth",
 
+	"norcalli/nvim-colorizer.lua",
 	{ "xiyaowong/transparent.nvim", commit = "fd35a46" },
 
 	{
