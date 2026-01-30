@@ -18,6 +18,7 @@ alias gps="git push"
 alias gd="git diff"
 alias ga="git add"
 alias gsub="git submodule"
+alias glines="git ls-files | xargs wc -l"
 
 # chezmoi
 alias cz="chezmoi"
