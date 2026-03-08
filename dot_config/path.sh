@@ -40,4 +40,5 @@ export PATH=$ANDROID_SDK_ROOT/platform-tools:$PATH
 export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH
 export PATH=$HOME/.pub-cache/bin:$PATH
 export PATH="$PATH":"$HOME/fvm/default/bin"
+export PATH="$PATH":"$HOME/fvm/bin"
 
