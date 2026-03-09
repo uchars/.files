@@ -41,7 +41,6 @@ end
 
 if cargo_installed then
 	servers.rust_analyzer = {}
-	servers.gitlab_ci_ls = {}
 	if not is_windows then
 		servers.nil_ls = {}
 	end
