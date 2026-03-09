@@ -3,6 +3,10 @@ alias v="nvim"
 alias nv="nvim"
 alias vm="NVIM_MINIMAL=YES nvim"
 
+# system stuff
+alias status="systemctl status"
+alias syslogs="journalctl -fu"
+
 # git
 alias gs="git status"
 alias gf="git fetch --all"

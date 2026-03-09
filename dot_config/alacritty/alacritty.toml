@@ -3,5 +3,5 @@ size = 16
 normal = { family = "3270 Nerd Font Mono", style = "Regular" }
 
 [window]
-opacity = 0.8
-blur = true
+opacity = 0.5
+padding = { x = 5, y = 1 }
