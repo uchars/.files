@@ -1,6 +1,7 @@
 [font]
 size = 12
-normal = { family = "Hack", style = "Regular" }
+normal = { family = "SauceCodePro Nerd Font", style = "Regular" }
 
 [window]
 opacity = 0.8
+blur = true

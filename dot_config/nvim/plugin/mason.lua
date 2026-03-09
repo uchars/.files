@@ -5,6 +5,9 @@ local is_nixos = vim.fn.executable("nixos-rebuild")
 -- 	return
 -- end
 
+
+require'nvim-web-devicons'.setup()
+
 local haskell_installed = vim.fn.executable("ghcup") == 1
 local py_installed = vim.fn.executable("python") == 1 or vim.fn.executable("python3") == 1
 local go_installed = vim.fn.executable("go") == 1
