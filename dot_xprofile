@@ -1,3 +1,4 @@
+#!/bin/bash
 if command -v dwmblocks >/dev/null 2>&1; then
    dwmblocks &
 fi
@@ -16,3 +17,5 @@ xrandr --output HDMI-A-1 --mode 1920x1080 --pos 760x1440
 if [[ -f $HOME/.fehbg ]]; then
     $HOME/.fehbg &
 fi
+
+xrdb "$HOME/.Xresources"
